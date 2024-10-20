@@ -1,0 +1,96 @@
+#+title: notes solidity
+
+cryptozombie
+
+
+Pour résumer, voici un contrat de base - la première chose que vous devez écrire à chaque fois que vous commencerez un nouveau projet :
+
+#+begin_example
+pragma solidity ^0.4.19;
+
+contract HelloWorld {
+
+}
+
+#+end_example
+
+
+
+Addition : x + y
+Soustraction : x - y
+Multiplication : x * y
+Division : x / y
+Modulo / reste : x % y (par exemple, 13 % 5 est 3, car si vous divisez 13 par 5, le reste est 3)
+
+#+begin_src c
+
+  uint x = 5 ** 2; // égal à 5^2 = 25
+
+  struct Zombie {
+    string name;
+    uint dna;
+  }
+
+
+  // Tableau avec une longueur fixe de 2 éléments :
+    uint[2] fixedArray;
+  // Un autre Tableau fixe, qui peut contenir 5 `string` :
+  string[5] stringArray;
+  // un Tableau dynamique, il n'a pas de taille fixe, il peut continuer de grandir :
+  uint[] dynamicArray;
+  Person[] people; // Tableau dynamique, on peut en rajouter sans limite.
+  Person[] public people; // Vous pouvez déclarer un tableau comme public, et Solidity créera automatiquement une méthode d'accès
+
+  function eatHamburgers(string _name, uint _amount) {
+
+  }
+
+  eatHamburgers("vitalik", 100);
+
+  uint[] numbers;
+  numbers.push(5);
+  numbers.push(10);
+  numbers.push(15);
+
+
+  function _addToArray(uint _number) private {
+    numbers.push(_number);
+  }
+
+
+  // view (vue) veut dire qu'elle va seulement voir des données sans les modifier
+  function sayHello() public view returns (string) {
+
+  // fonctions pure : même pas accès à des données de l'application
+  function _multiply(uint a, uint b) private pure returns (uint) {
+    return a * b;
+  }
+
+  //6e91ec6b618bb462a4a6ee5aa2cb0e9cf30f7a052bb467b0ba58b8748c00d2e5
+  keccak256("aaaab");
+  //b1f078126895a1424524de5321b339ab00408010b7cf0e6ed451514981e58aa9
+  keccak256("aaaac");
+
+
+  uint8 a = 5;
+  uint b = 6;
+  // renvoie une erreur car a * b renvoie un uint, pas un uint8:
+  uint8 c = a * b;
+  // Nous devons convertir le type de b en uint8 pour que cela marche :
+  uint8 c = a * uint8(b);
+
+ 
+#+end_src
+
+
+
+
+    Remarque: Par convention (mais ce n'est pas obligatoire), les noms des paramètres des fonctions commencent avec un trait de soulignement (_) afin de les différencier des variables globales. Nous utiliserons cette convention tout au long de notre tutoriel.
+
+Il est donc recommandé de marquer vos fonctions comme private (privées) par défaut, puis de ne rendre public (publiques) seulement les fonctions que vous voulez exposer à tout le monde.
+
+Par convention, le nom des fonction privée commence par _ : 
+> function _addToArray(uint _number) private
+
+ 
+
