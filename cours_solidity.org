@@ -94,3 +94,162 @@ Par convention, le nom des fonction privée commence par _ :
 
  
 
+
+Un _ évènement _ est un moyen pour votre contrat d'indiquer à votre application frontale (front-end) que quelque chose vient d'arriver sur la blockchain, l'application frontale pouvant être «à l'écoute» de certains événements pour prendre des mesures quand ils se produisent.
+
+#+begin_src c
+// déclaration de l'évènement
+event IntegersAdded(uint x, uint y, uint result);
+
+function add(uint _x, uint _y) public {
+  uint result = _x + _y;
+  // déclenchement de l'évènement pour indiquer à l'application que la fonction a été appelée :
+  IntegersAdded(_x, _y, result);
+  return result;
+}
+#+end_src
+
+
+mapping (clé valeur)
+ mapping (uint => address) public zombieToOwner;
+
+En Solidity, il existe des variables globales accessibles à toutes les fonctions. L'une d'elles est msg.sender, qui faire référence à l'address de la personne (ou du smart contract) qui a appelée la fonction actuelle.
+
+
+require (cond); vérifie si cond est respecté, sinon ne s'exécute pas
+
+Héritage
+#+begin_src c
+contract Zombiefactory {
+}
+
+contract ZombieFeeding is ZombieFactory {
+}
+#+end_src
+
+import
+
+#+begin_src c
+  import "./zombiefactory.sol";
+#+end_src
+
+
+internal est similaire à private, à l'exception qu'elle est aussi accessible aux contrats qui héritent de ce contrat. (On dirait que c'est ce que l'on veut!).
+external est similaire à public, à l'exception que ces fonctions peuvent SEULEMENT être appelées à l'extérieur du contrat - elles ne peuvent pas être appelées par d'autres fonctions à l'intérieur du contrat.
+
+
+interface
+
+#+begin_src c
+  contract NumberInterface {
+    function getNum(address _myAddress) public view returns (uint);
+  }
+  contract MyContract {
+    address NumberInterfaceAddress = 0xab38...
+    // ^ L'adresse du contrat FavoriteNumber sur Ethereum
+    NumberInterface numberContract = NumberInterface(NumberInterfaceAddress)
+    // Maintenant `numberContract` pointe vers l'autre contrat
+#+end_src
+
+Pour résumer le contrat Ownable fait fondamentalement ceci :
+
+    Quand un contrat est créé, son constructeur défini le owner égal à msg.sender (la personne qui le déploie)
+
+    Il ajoute un modificateur onlyOwner, qui permet de restreindre l'accès à certaines fonctions à seulement le owner
+
+    Il vous permet de transférer le contrat à un nouvel owner
+
+
+
+20 min
+
+#+begin_src c
+/**
+ * @dev Abandonne si appelé par un compte autre que le `owner`.
+ */
+modifier onlyOwner() {
+  require(msg.sender == owner);
+  _;
+}
+#+end_src
+
+Nous allons utiliser ce modificateur comme suit :
+
+#+begin_src c
+contract MyContract is Ownable {
+  event LaughManiacally(string laughter);
+
+  // Vous remarquerez l'usage de `onlyOwner` ci-dessous :
+  function likeABoss() external onlyOwner {
+    LaughManiacally("Muahahahaha");
+  }
+}
+
+#+end_src
+
+La variable now (maintenant) va retourner l'horodatage actuel unix
+
+#+begin_src c
+  // Un mappage pour stocker l'âge d'un utilisateur :
+  mapping (uint => uint) public age;
+
+  // Un modificateur qui nécessite que l'utilisateur soit plus âgé qu'un certain âge :
+  modifier olderThan(uint _age, uint _userId) {
+    require (age[_userId] >= _age);
+    _;
+  }
+  // Doit avoir plus de 16 ans pour conduire une voiture (du moins, aux US).
+  // Nous pouvons appeler le modificateur `olderThan` avec des arguments, comme :
+  function driveCar(uint _userId) public olderThan(16, _userId) {
+    // Logique de la fonction
+  }
+  function machin(param) payable  // signifie qu'on peut envoyer de l'argent à la fonction (à un contrat)
+  // Ceux-ci sont stocker dans le compte Ether du contrat
+#+end_src
+
+Vous pouvez écrire une fonction pour retirer des Ether du contrat de cette manière :
+#+begin_src C++ :noweb yes
+contract GetPaid is Ownable {
+  function withdraw() external onlyOwner {
+    owner.transfer(this.balance);
+  }
+}
+#+end_src
+
+Vous pouvez transférer des Ether à une adresse en utilisant la fonction transfer, et this.balance retournera la balance totale stockée sur le contrat.
+Si 100 utilisateurs ont payé 1 Ether à votre contrat, this.balance sera égal à 100 Ether.
+
+
+vous pouvez avoir une fonction qui renvoie les Ether à msg.sender s'il paye trop cher pour un article :
+#+begin_src C++ :noweb yes
+uint itemFee = 0.001 ether;
+msg.sender.transfer(msg.value - itemFee);
+#+end_src
+
+nb alea :
+#+begin_src C++ :noweb yes
+  uint randNonce = 0;
+
+  function randMod(uint _modulus) internal returns(uint) {
+    randNonce++;
+    return uint(keccak256(now, msg.snder, randNonce)) % _modulus;
+  }
+#+end_src
+
+#+begin_src C++ :noweb yes
+import "./erc721.sol";
+contract ZombieOwnership is ZombieAttack, ERC721 {
+
+}
+#+end_src
+
+#+begin_src C++ :noweb yes
+function _transfer(address _from, address _to, uint256 _tokenId) private {
+    ownerZombieCount[_to]++;
+    ownerZombieCount[_from]--;
+    zombieToOwner[_tokenId] = _to;
+    Transfer(_from, _to, _tokenId);
+  }
+#+end_src
+
+
