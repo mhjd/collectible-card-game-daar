@@ -1,0 +1,316 @@
+#+title: notes solidity
+
+cryptozombie
+
+
+Pour résumer, voici un contrat de base - la première chose que vous devez écrire à chaque fois que vous commencerez un nouveau projet :
+
+#+begin_example
+pragma solidity ^0.4.19;
+
+contract HelloWorld {
+
+}
+
+#+end_example
+
+
+
+Addition : x + y
+Soustraction : x - y
+Multiplication : x * y
+Division : x / y
+Modulo / reste : x % y (par exemple, 13 % 5 est 3, car si vous divisez 13 par 5, le reste est 3)
+
+#+begin_src c
+
+  uint x = 5 ** 2; // égal à 5^2 = 25
+
+  struct Zombie {
+    string name;
+    uint dna;
+  }
+
+
+  // Tableau avec une longueur fixe de 2 éléments :
+    uint[2] fixedArray;
+  // Un autre Tableau fixe, qui peut contenir 5 `string` :
+  string[5] stringArray;
+  // un Tableau dynamique, il n'a pas de taille fixe, il peut continuer de grandir :
+  uint[] dynamicArray;
+  Person[] people; // Tableau dynamique, on peut en rajouter sans limite.
+  Person[] public people; // Vous pouvez déclarer un tableau comme public, et Solidity créera automatiquement une méthode d'accès
+
+  function eatHamburgers(string _name, uint _amount) {
+
+  }
+
+  eatHamburgers("vitalik", 100);
+
+  uint[] numbers;
+  numbers.push(5);
+  numbers.push(10);
+  numbers.push(15);
+
+
+  function _addToArray(uint _number) private {
+    numbers.push(_number);
+  }
+
+
+  // view (vue) veut dire qu'elle va seulement voir des données sans les modifier
+  function sayHello() public view returns (string) {
+
+  // fonctions pure : même pas accès à des données de l'application
+  function _multiply(uint a, uint b) private pure returns (uint) {
+    return a * b;
+  }
+
+  //6e91ec6b618bb462a4a6ee5aa2cb0e9cf30f7a052bb467b0ba58b8748c00d2e5
+  keccak256("aaaab");
+  //b1f078126895a1424524de5321b339ab00408010b7cf0e6ed451514981e58aa9
+  keccak256("aaaac");
+
+
+  uint8 a = 5;
+  uint b = 6;
+  // renvoie une erreur car a * b renvoie un uint, pas un uint8:
+  uint8 c = a * b;
+  // Nous devons convertir le type de b en uint8 pour que cela marche :
+  uint8 c = a * uint8(b);
+
+ 
+#+end_src
+
+
+
+
+    Remarque: Par convention (mais ce n'est pas obligatoire), les noms des paramètres des fonctions commencent avec un trait de soulignement (_) afin de les différencier des variables globales. Nous utiliserons cette convention tout au long de notre tutoriel.
+
+Il est donc recommandé de marquer vos fonctions comme private (privées) par défaut, puis de ne rendre public (publiques) seulement les fonctions que vous voulez exposer à tout le monde.
+
+Par convention, le nom des fonction privée commence par _ : 
+> function _addToArray(uint _number) private
+
+ 
+
+. Si vous voulez voir un exemple d'une implémentation plus détaillée, vous pouvez regarder le contrat ERC721 d'OpenZeppelin après ce tutoriel
+
+
+Pour prévenir cela, OpenZeppelin a créé une bibliothèque appelée SafeMath qui empêche les débordements.
+
+#+begin_src C++ :noweb yes
+using SafeMath for uint256;
+
+uint256 a = 5;
+uint256 b = a.add(3); // 5 + 3 = 8
+uint256 c = a.mul(2); // 5 * 2 = 10
+#+end_src
+
+
+assert : rembourse pas le gas
+require : rembourse le gas
+
+La plupart du temps vous allez vouloir utiliser require dans votre code, assert est plutôt utilisé quand quelque chose a vraiment mal tourné avec le code (comme un débordement d'uint).
+
+
+
+safemath16 et safemath32, pour les int16 et 32, sinon le test de débordement ne fonctionne pas 
+  using SafeMath32 for uint32;
+  using SafeMath16 for uint16;
+
+
+#+begin_src C++ :noweb yes
+window.addEventListener('load', function() {
+
+  // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+  if (typeof web3 !== 'undefined') {
+    // Use Mist/MetaMask's provider
+    web3js = new Web3(web3.currentProvider);
+  } else {
+    // Handle the case where the user doesn't have web3. Probably
+    // show them a message telling them to install MetaMask in
+    // order to use our app.
+  }
+
+  // Now you can start your app & access web3js freely:
+  startApp()
+
+})
+#+end_src
+
+Maintenant que nous avons initialiser Web3.js avec le fournisseur Web3 de MetaMask, nous allons configurer la communication avec notre smart contract.
+
+Web3.js va avoir besoin de 2 choses pour pouvoir communiquer avec notre contrat : son adresse et son ABI.
+
+
+Après avoir déployer votre contrat, il sera associé à une adresse Ethereum pour toujours.
+Vous allez avoir besoin de copier cette adresse après le déploiement afin de pouvoir communiquer avec le smart contract.
+
+
+ABI veut dire "Application Binary Interface" (Interface Binaire d'Application). Fondamentalement, c'est une représentation des fonctions de votre contrat au format JSON qui indique à Web3.js comment formater les appels aux fonctions pour que votre contrat les comprenne.
+
+Quand vous compilez votre contrat pour le déployer sur Ethereum (ce que nous verrons dans la Leçon 7), le compilateur Solidity vous donnera son ABI, vous aller devoir le copier et le sauvegarder en plus de l'adresse de votre contrat.
+
+#+begin_src C++ :noweb yes
+// Instanciation de myContract
+var myContract = new web3js.eth.Contract(myABI, myContractAddress);
+#+end_src
+
+Web3.js a deux méthodes que nous allons utiliser pour appeler les fonctions de notre contrat : call (appeler) et send (envoyer).
+call est utilisé pour les fonctions view etpure. C'est exécuté seulement sur le nœud local, et cela ne va pas créer de transaction sur la blockchain.
+
+#+begin_src C++ :noweb yes
+myContract.methods.myMethod(123).call()
+#+end_src
+
+send va créer une transaction et changer l'état des données sur la blockchain. Vous aurez besoin d'utiliser send pour toutes les fonctions qui ne sont pas view ou pure.
+
+#+begin_src C++ :noweb yes
+myContract.methods.myMethod(123).send()
+#+end_src
+
+
+Quand vous déclarez une variable public, cela crée automatiquement une fonction "getter" (une fonction de récupération) public avec le même nom. Si vous voulez récupérer le zombie avec l'id 15, vous l’appellerez comme si c'était une fonction : zombies(15).
+
+#+begin_src js :noweb yes
+function getZombieDetails(id) {
+  return cryptoZombies.methods.zombies(id).call()
+}
+
+// Appelle la fonction et fait quelque chose avec le résultat :
+getZombieDetails(15)
+.then(function(result) {
+  console.log("Zombie 15: " + JSON.stringify(result));
+});
+#+end_src
+
+
+Nous pouvons connaître le compte actif de l'utilisateur via la variable injectée web3 :
+#+begin_src js
+  var userAccount = web3.eth.accounts[0]
+  var accountInterval = setInterval(function() {
+      // Vérifie si le compte a changé
+      if (web3.eth.accounts[0] !== userAccount) {
+          userAccount = web3.eth.accounts[0];
+          // Appelle une fonction pour mettre à jour l'interface avec le nouveau compte
+          // updateInterface();
+          getZombiesByOwner(userAccount).then(displayZombies;)
+      }
+    }, 100);
+#+end_src
+
+
+Envoyer avec send une transaction nécessite une adresse from de celui qui appelle la fonction (qui devient msg.sender dans votre code Solidity). Nous allons vouloir que ce soit l'utilisateur de notre DApp, afin que MetaMask affiche une fenêtre pour lui demander de signer la transaction.
+
+Envoyer avec send une transaction coûte du gas
+
+Il y a un certain délais entre le moment où l'utilisateur envoie une transaction avec send et le moment où cette transaction prend effet sur la blockchain.
+
+#+begin_src javascript
+function createRandomZombie(name) {
+  // Cela va prendre du temps, nous mettons à jour l'interface pour
+  // signaler à l'utilisateur que la transaction a été envoyée
+  $("#txStatus").text("Creating new zombie on the blockchain. This may take a while...");
+  // Nous envoyons la tx à notre contrat :
+  return cryptoZombies.methods.createRandomZombie(name)
+  .send({ from: userAccount })
+  .on("receipt", function(receipt) {
+    $("#txStatus").text("Successfully created " + name + "!");
+    // La transaction a été acceptée sur la blokchain, il faut mettre à jour l'interface
+    getZombiesByOwner(userAccount).then(displayZombies);
+  })
+  .on("error", function(error) {
+    // Si la transaction a échouée, on en informe l'utilisateur
+    $("#txStatus").text(error);
+  });
+}
+#+end_src
+
+
+
+    Remarque : Vous avec le choix de spécifier le gas et gasPrice quand vous appelez send, ex : .send({ from: userAccount, gas: 3000000 }). Si vous ne le spécifiez pas, MetaMask va laisser l'utilisateur choisir ces valeurs.
+
+
+#+begin_src javascript
+function feedOnKitty(zombieId, kittyId) {
+  // Cela va prendre du temps, nous mettons à jour l'interface pour
+  // signaler à l'utilisateur que la transaction a été envoyée
+  $("#txStatus").text("En train de manger un chaton, cela peut prendre du temps...");
+  // Nous envoyons la tx à notre contrat :
+  return cryptoZombies.methods.feedOnKitty(zombieId, kittyId)
+  .send({ from: userAccount })
+  .on("receipt", function(receipt) {
+    $("#txStatus").text("A mangé un chaton et a engendré un nouveau Zombie !");
+    // La transaction a été acceptée sur la blokchain, il faut mettre à jour l'interface
+    getZombiesByOwner(userAccount).then(displayZombies);
+  })
+  .on("error", function(error) {
+    // Si la transaction a échouée, on en informe l'utilisateur
+    $("#txStatus").text(error);
+  });
+}
+
+    #+end_src
+Voyons un autre type de fonction qui demande un traitement spécial en Web3.js - les fonctions payable.
+
+#+begin_src javascript
+  // Cela va convertir 1 ETH en Wei
+  web3js.utils.toWei("1", "ether");
+#+end_src
+
+Dans notre DApp, nous avons défini levelUpFee = 0.001 ether
+
+#+begin_src C++ :noweb yes
+function levelUp(uint _zombieId) external payable {
+  require(msg.value == levelUpFee);
+  zombies[_zombieId].level++;
+}
+#+end_src
+ainsi quand nous appelons notre fonction levelUp, l'utilisateur devra s'assurer qu'il envoie 0.001 Ether avec le code suivant :
+
+#+begin_src javascript
+cryptoZombies.methods.levelUp(zombieId).send({ from: userAccount, value: web3js.utils.toWei("0.001", "ether") })
+#+end_src
+
+
+
+Avec Web3.js, vous pouvez vous abonner à un évènement pour que votre fournisseur web3 exécute une certaine logique de votre code à chaque fois qu'il est émis :
+#+begin_src javascript
+cryptoZombies.events.NewZombie()
+.on("data", function(event) {
+  let zombie = event.returnValues;
+  // Nous pouvons accéder aux 3 valeurs de retour de cet évènement avec l'objet `event.returnValues` :
+  console.log("A new zombie was born!", zombie.zombieId, zombie.name, zombie.dna);
+}).on("error", console.error);
+#+end_src
+
+Si on veut juste les nouveaux zombies de l'utilisateur actuel et pas tous, il faut utiliser indexed.
+#+begin_src C++ :noweb yes
+event Transfer(address indexed _from, address indexed _to, uint256 _tokenId);
+#+end_src
+Dans ce cas, puisque _from et _to sont indexed, cela veut dire que nous pouvons les utiliser comme filtre dans notre écouteur d'évènements de notre front-end :
+#+begin_src javascript
+// On utilise `filter` pour seulement lancer ce code quand `_to` est égal à `userAccount`
+cryptoZombies.events.Transfer({ filter: { _to: userAccount } })
+.on("data", function(event) {
+  let data = event.returnValues;
+  // L’utilisateur actuel a reçu un zombie !
+  // Faire quelque chose pour mettre à jour l'interface
+}).on("error", console.error);
+#+end_src
+
+
+Nous pouvons interroger les évènements passés en utilisant getPastEvents, et utiliser les filtres fromBlock et toBlock pour indiquer à Solidity l'intervalle de temps pour récupérer nos évènements ("block" dans ce cas fait référence au numéro de bloc Ethereum) :
+#+begin_src javascript
+cryptoZombies.getPastEvents("NewZombie", { fromBlock: 0, toBlock: "latest" })
+.then(function(events) {
+  // `events` est un tableau d'objets `event` pour lequel nous pouvons itérer, comme nous l'avons fait ci-dessus
+  // Ce code donnera une liste de tous les zombies créés
+});
+#+end_src
+
+Utiliser les évènements comme un moyen de stockage moins cher.
+En contrepartie, les évènements ne sont pas lisibles depuis le smart contract. Mais c'est cas d'utilisation important à retenir si vous voulez stocker de l'information avec un historique sur la blockchain afin de le lire depuis le front-end de votre application.
+
+Par exemple, nous pourrions l'utiliser pour avoir un historique de nos combats de zombies - nous pourrions créer un évènement à chaque fois qu'un zombie attaque et gagne.
