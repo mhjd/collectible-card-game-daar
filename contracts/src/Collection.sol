@@ -46,7 +46,7 @@ contract Collection is ERC721 {
   function _createRandomCard() private returns(int) {
       /* fonction imaginaire, c'est chaud de généré des nombres au hasard sur la blockchain */
       /* https://github.com/Yuvrajchandra/CryptoZombies-Solidity-Notes?tab=readme-ov-file#so-how-do-we-generate-random-numbers-safely-in-ethereum */
-      return _createCard(random(0, myModelCards.lenght));
+      return _createCard(random(0, myModelCards.length));
   }
 
 
