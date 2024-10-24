@@ -1,7 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import styles from './styles.module.css'
 import * as ethereum from '@/lib/ethereum'
 import * as main from '@/lib/main'
+import pokemon from 'pokemontcgsdk'
+import SetDetails from './SetDetails'
+import { HomePage } from './HomePage'
+
+pokemon.configure({ apiKey: '45682ac3-6104-4885-bcce-9bceba950da5' })
 
 type Canceler = () => void
 const useAffect = (
@@ -39,11 +45,25 @@ const useWallet = () => {
   }, [details, contract])
 }
 
+const usePokemonSets = () => {
+  const [sets, setSets] = useState<any[]>([])
+  useEffect(() => {
+    pokemon.set.all()
+      .then(result => setSets(result))
+      .catch(error => console.error('Error fetching Pokémon sets:', error))
+  }, [])
+  return sets
+}
+
 export const App = () => {
   const wallet = useWallet()
+  const sets = usePokemonSets()
   return (
-    <div className={styles.body}>
-      <h1>Welcome to Pokémon TCG !!!</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage sets={sets} />} />
+        <Route path="/set/:setId" element={<SetDetails />} />
+      </Routes>
+    </Router>
   )
 }

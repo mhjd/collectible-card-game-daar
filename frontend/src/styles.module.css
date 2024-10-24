@@ -14,6 +14,38 @@ body {
   padding: 12px;
 }
 
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.cardItem {
+  text-align: center;
+}
+
+.setGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.noListStyle {
+  list-style-type: none;
+  padding: 0;
+}
+
+.setItem {
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+}
+
 .grid {
   display: grid;
   gap: 1px;
