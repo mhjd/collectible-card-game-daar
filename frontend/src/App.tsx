@@ -43,7 +43,7 @@ export const App = () => {
   const wallet = useWallet()
   return (
     <div className={styles.body}>
-      <h1>Welcome to Pokémon TCG</h1>
+      <h1>Welcome to Pokémon TCG !!!</h1>
     </div>
   )
 }
