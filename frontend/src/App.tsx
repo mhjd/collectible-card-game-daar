@@ -6,6 +6,7 @@ import * as main from '@/lib/main'
 import pokemon from 'pokemontcgsdk'
 import SetDetails from './SetDetails'
 import { HomePage } from './HomePage'
+import { SetsPage } from './SetsPage'
 
 pokemon.configure({ apiKey: '45682ac3-6104-4885-bcce-9bceba950da5' })
 
@@ -61,7 +62,8 @@ export const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage sets={sets} />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/sets" element={<SetsPage sets={sets} />} />
         <Route path="/set/:setId" element={<SetDetails />} />
       </Routes>
     </Router>
