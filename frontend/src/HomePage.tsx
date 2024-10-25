@@ -14,7 +14,7 @@ export const HomePage: React.FC<HomePageProps> = ({ sets }) => {
         {sets.map((set, index) => (
           <li key={index} className={styles.setItem}>
             <Link to={`/set/${set.id}`} className={styles.setLink}>
-              <img src={set.images.logo} alt={set.name} />
+              <img src={set.images.logo} alt={set.name} className={styles.setLogo} />
             </Link>
           </li>
         ))}
