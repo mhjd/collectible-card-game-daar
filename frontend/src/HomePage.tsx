@@ -13,7 +13,9 @@ export const HomePage: React.FC<HomePageProps> = ({ sets }) => {
       <ul className={`${styles.setGrid} ${styles.noListStyle}`}>
         {sets.map((set, index) => (
           <li key={index} className={styles.setItem}>
-            <Link to={`/set/${set.id}`} className={styles.setLink}>{set.name}</Link>
+            <Link to={`/set/${set.id}`} className={styles.setLink}>
+              <img src={set.images.logo} alt={set.name} />
+            </Link>
           </li>
         ))}
       </ul>
