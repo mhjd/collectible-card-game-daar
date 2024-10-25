@@ -9,8 +9,9 @@ interface HomePageProps {
 export const HomePage: React.FC<HomePageProps> = ({ sets }) => {
   return (
     <div className={styles.body}>
-      <h1>Home Page</h1>
-      <ul className={`${styles.setGrid} ${styles.noListStyle}`}>
+      <div className={styles.container}>
+        <h1>Home Page</h1>
+        <ul className={`${styles.setGrid} ${styles.noListStyle}`}>
         {sets.map((set, index) => (
           <li key={index} className={styles.setItem}>
             <Link to={`/set/${set.id}`} className={styles.setLink}>
@@ -18,7 +19,8 @@ export const HomePage: React.FC<HomePageProps> = ({ sets }) => {
             </Link>
           </li>
         ))}
-      </ul>
+        </ul>
+      </div>
     </div>
   );
 };
