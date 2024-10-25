@@ -12,7 +12,12 @@ export const HomePage: React.FC = () => {
             <li>
               <Link to="/sets" className={styles.navLink}>Browse All Sets</Link>
             </li>
-            {/* Add more navigation links here as needed */}
+            <li>
+              <Link to="/collection" className={styles.navLink}>My Collection</Link>
+            </li>
+            <li>
+              <Link to="/open-booster" className={styles.navLink}>Open Booster</Link>
+            </li>
           </ul>
         </nav>
       </div>
