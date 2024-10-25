@@ -2,10 +2,11 @@
 pragma solidity ^0.8;
 
 import "./Collection.sol";
+import "./ownable.sol";
 
 contract Main is Ownable {
   int private count;
-  mapping(int => Collection) private collections;
+  mapping(uint => Collection) private collections;
 
   constructor() {
     count = 0;
@@ -17,17 +18,21 @@ contract Main is Ownable {
     collections[count++] = new Collection(name, cardCount);
   }
 
-  function addModelCard(int CollectionId, string pathImg) private onlyOwner {
+  function addModelCard(uint CollectionId, string pathImg) private onlyOwner {
       collections[CollectionId]._createModelCard(pathImg);
   }
 
-  function assignCardToOwner(address _owner, int nft) private onlyOwner {
-      CardToOwner[nft] = userId; 
-      ownerCardCount[userId]++; // On l'initialise nulle part mais normal en solidity je crois
+  function mint(uint _collectionId, address _owner) private onlyOwner(){
+
   }
 
-  function assignRandomCardToOwner(address _owner) private onlyOwner {
-      assignCardToOwner(userId, _createRandomCard());
+  function assignCardToOwner(uint _collectionId, address _owner, uint nft) private onlyOwner {
+      collections[_collectionId].cards[nft].owner = _owner;
+      collections[_collectionId].ownerCardCount[_owner]++; // On l'initialise nulle part mais normal en solidity je crois
+  }
+
+  function assignRandomCardToOwner(uint _collectionId, address _owner) private onlyOwner {
+      assignCardToOwner( );
   }
 
   // ouverture de deck

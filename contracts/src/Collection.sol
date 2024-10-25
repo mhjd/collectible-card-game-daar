@@ -2,22 +2,22 @@
 pragma solidity ^0.8;
 
 import "./erc721.sol";
+import "./ownable.sol";
 
-contract Collection is ERC721 {
+
+contract Collection is ERC721, Ownable {
     string public name;
-    int public cardCount;
+    uint public cardCount;
     struct ModelCard {
-        string pathImg;
-        int cardNumber;//Id du modèle
+        string cardNumber;//Id du modèle
     }
     struct Card{
-        int modelNumber;// Le modèle associé
-        int cardId;//Id d'unicité
+        string modelNumber;// Le modèle associé
+        uint cardId;//Id d'unicité
         address owner;//owner de la carte
     }
 
-
-    constructor(string memory _name, int _cardCount) {
+    constructor(string memory _name, uint _cardCount) {
     name = _name;
     cardCount = _cardCount;
     }
@@ -30,27 +30,31 @@ contract Collection is ERC721 {
 
     // je vois pas l'intérêt de ça, pourquoi pas le calculer sur le moment ? vu que ça coute cher d'écrire sur la blockchain.
     // j'ai juste copié zombieOwnership.sol donc je pense faut qu'il soit là, mais chelou
-    mapping (address => uint) ownerCardCount;
+    mapping (address => uint) public ownerCardCount;
 
     // utile pour transferFrom et approve
-    mapping (uint => address) cardApprovals;
+    mapping (uint => address) private cardApprovals;
 
 
-    function _createModelCard(string _pathImg) private {
+    function _createModelCard(string _pathImg) public { //Un peu louche de la mettre public mais faudra voir avec la gestion de l'admin
         modelCards.push(ModelCard(_pathImg, modelCards.length()));
     }
 
     // créer une carte
-    function _createCard(uint _modelCardId) private returns(int) {
+    function _createCard(uint _modelCardId) public returns(uint) {
         // au return, ça va renvoyer l'indice de la nouvelle carte créée
         ownerCardCount[msg.sender]++;
         return cards.push(Card(_modelCardId, cards.length(), msg.sender));
     }
 
-    function _createRandomCard() private returns(int) {
-        /* fonction imaginaire, c'est chaud de générer des nombres au hasard sur la blockchain */
-        /* https://github.com/Yuvrajchandra/CryptoZombies-Solidity-Notes?tab=readme-ov-file#so-how-do-we-generate-random-numbers-safely-in-ethereum */
-        return _createCard(random(0, modelCards.length-1),msg.sender);
+    function getRandomModelId() private view returns (uint) {
+        // On choisit de générer les nombres aléatoires selon certains critères complexes.
+        uint randomHash = uint(keccak256(abi.encodePacked(block.timestamp,msg.sender,block.difficulty)));
+        return randomHash % modelCards.length;
+    }
+
+   function _createRandomCard() public returns(uint) {
+        return cards.push(Card(getRandomModelId(),cards.length,msg.sender));
     }
 
 
@@ -70,14 +74,27 @@ contract Collection is ERC721 {
         emit Transfer(_from, _to, _tokenId);
     }
 
+    function transfer(address _from, address _to, uint256 _tokenId) public onlyOwnerOf(_tokenId){
+        _transfer(_from, _to, _tokenId);
+    }
 
     function transferFrom(address _from, address _to, uint256 _tokenId) external payable {
         require (cards[_tokenId].owner == msg.sender || cardApprovals[_tokenId] == msg.sender);
         _transfer(_from, _to, _tokenId);
     }
 
+    modifier onlyOwnerOf(uint256 _tokenId){
+        require(cards[_tokenId].owner == msg.sender);
+        _;
+    }
+
     function approve(address _approved, uint256 _tokenId) external payable onlyOwnerOf(_tokenId) {
         cardApprovals[_tokenId] = _approved;
         emit Approval(msg.sender, _approved, _tokenId);
+    }
+
+    function takeOwnership(uint256 _tokenId) public{
+        require(cardApprovals[_tokenId] == msg.sender);
+        _transfer(ownerOf(_tokenId),msg.sender,_tokenId);
     }
 }
