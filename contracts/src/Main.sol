@@ -27,7 +27,7 @@ contract Main is Ownable {
   }
 
   function assignRandomCardToOwner(address _owner) private onlyOwner {
-      assignCardToOwner(userId, _createRandomCard())
+      assignCardToOwner(userId, _createRandomCard());
   }
 
   // ouverture de deck
