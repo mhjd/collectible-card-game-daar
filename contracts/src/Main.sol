@@ -26,6 +26,14 @@ contract Main is Ownable {
 
   }
 
+    function getCollections() public view returns(Collection[] memory){
+        Collection[] memory res = new Collection[](count);
+        for(uint i = 0; i < count;i++){
+            res[i] = collections[i];
+        }
+        return res;
+    }
+
   function assignCardToOwner(uint _collectionId, address _owner, uint nft) private onlyOwner {
       Collection collection = collections[_collectionId];
       collection.assignCard(nft, _owner);
