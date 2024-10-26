@@ -129,6 +129,37 @@ const Chacal: React.FC = () => {
       return null;
     }
   }
+
+  async function createCollectionHardCoded() {
+    try {
+      console.log("Calling _createCollectionHardCoded() on contract at:", contractAdress);
+      const accounts = await web3.eth.getAccounts();
+      console.log("Connected account:", accounts[0]);
+	const name = "cachalot";
+	await chacal.methods.createCollection(name, 10)
+        .send({ from: accounts[0] })
+        .on("receipt", function (receipt) {
+          $("#txStatus").text("Successfully created " + name + "!");
+        })
+        .on("error", function (error) {
+
+          $("#txStatus").text(error);
+        });
+	      
+      return result;
+    } catch (error) {
+      console.error('Error calling createCollection():', error);
+      return null;
+    }
+  }
+  
+    async function retrieveAllCollectionName() {
+	const myCollections = await chacal.methods.getAllCollection().call({
+        from: accounts[0]
+      });
+       console.log(myCollections);
+	
+    }
   
   const retrieveIntegerAndPrintIt = async () => {
     const value = await getInteger();
@@ -139,6 +170,8 @@ const Chacal: React.FC = () => {
     <div className={styles.body}>
       <h1>Test connection with solidity</h1>
       <button className={styles.button} onClick={retrieveIntegerAndPrintIt}>Click on me to retrieve a integer</button>
+      <button className={styles.button} onClick={createCollectionHardCoded}>Click on me to create a collection hard coded</button>
+      <button className={styles.button} onClick={retrieveAllCollectionName}>Click on me to retrieveAllCollectionName</button>
       {integer !== null && <p>Retrieved Integer: {integer}</p>}
     </div>
   );
