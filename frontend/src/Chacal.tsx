@@ -65,6 +65,19 @@ const Chacal: React.FC = () => {
     },
     {
       "inputs": [],
+      "name": "getCollections",
+      "outputs": [
+        {
+          "internalType": "contract Collection[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "isOwner",
       "outputs": [
         {
@@ -152,9 +165,35 @@ const Chacal: React.FC = () => {
       return null;
     }
   }
+
+    async function addModelCardToCollectionHardCoded()  {
+      console.log("Calling _addModelCardToCollectionHardCoded() on contract at:", contractAdress);
+      const accounts = await web3.eth.getAccounts();
+      console.log("Connected account:", accounts[0]);
+	const nameCollection = "cachalot";
+	const nameModelCard = "machinchouette";
+	await chacal.methods.addModelCard(name, nameModelCard)
+        .send({ from: accounts[0] })
+        .on("receipt", function (receipt) {
+          $("#txStatus").text("Successfully created " + nameModelCard + "!");
+        })
+        .on("error", function (error) {
+
+          $("#txStatus").text(error);
+        });
+	      
+      return result;
+    } catch (error) {
+      console.error('Error calling addModelCardToCollectionHardCoded():', error);
+      return null;
+    }
+	
+    }
   
     async function retrieveAllCollectionName() {
-	const myCollections = await chacal.methods.getAllCollection().call({
+
+      const accounts = await web3.eth.getAccounts();
+	const myCollections = await chacal.methods.getCollections().call({
         from: accounts[0]
       });
        console.log(myCollections);
