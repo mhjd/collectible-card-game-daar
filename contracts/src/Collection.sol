@@ -37,14 +37,14 @@ contract Collection is ERC721, Ownable {
 
 
     function _createModelCard(string memory _pathImg) public { //Un peu louche de la mettre public mais faudra voir avec la gestion de l'admin
-        modelCards.push(ModelCard(_pathImg, modelCards.length()));
+        modelCards.push(ModelCard(_pathImg, modelCards.length));
     }
 
     // créer une carte
     function _createCard(uint _modelCardId) public returns(uint) {
         // au return, ça va renvoyer l'indice de la nouvelle carte créée
         ownerCardCount[msg.sender]++;
-        return cards.push(Card(_modelCardId, cards.length(), msg.sender));
+        return cards.push(Card(_modelCardId, cards.length, msg.sender));
     }
 
     function getRandomModelId() private view returns(uint) {
@@ -63,7 +63,7 @@ contract Collection is ERC721, Ownable {
         return ownerCardCount[_owner];
     }
 
-    function ownerOf(uint256 _tokenId) external view returns (address) {
+    function ownerOf(uint256 _tokenId) override external view returns (address) {
         return cards[_tokenId].owner;
     }
   
