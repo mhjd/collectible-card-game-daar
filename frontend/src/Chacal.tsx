@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import Web3 from 'web3';
 
 
-const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+const web3 = new Web3("http://127.0.0.1:8545");
 
 const Chacal: React.FC = () => {
   const [integer, setInteger] = useState<number | null>(null);
@@ -113,12 +113,26 @@ const Chacal: React.FC = () => {
   const contractAdress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
   const chacal = new web3.eth.Contract(myAbi, contractAdress);
 
-  function getInteger() {
-      // return 43;
-      return chacal.methods._test().call();
+  async function getInteger() {
+    try {
+      console.log("Calling _test() on contract at:", contractAdress);
+      const accounts = await web3.eth.getAccounts();
+      console.log("Connected account:", accounts[0]);
+      
+      const result = await chacal.methods._test().call({
+        from: accounts[0]
+      });
+      console.log("Result from _test():", result);
+      return result;
+    } catch (error) {
+      console.error('Error calling _test():', error);
+      return null;
+    }
   }
-  const retrieveIntegerAndPrintIt = () => {
-      setInteger(getInteger());
+  
+  const retrieveIntegerAndPrintIt = async () => {
+    const value = await getInteger();
+    setInteger(value);
   };
 
   return (
