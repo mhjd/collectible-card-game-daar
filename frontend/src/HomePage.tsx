@@ -10,13 +10,16 @@ export const HomePage: React.FC = () => {
         <nav className={styles.navigation}>
           <ul className={styles.noListStyle}>
             <li>
-              <Link to="/sets" className={styles.navLink}>Browse All Sets</Link>
+              <Link to="/setsa" className={styles.navLink}>Browse All Sets</Link>
             </li>
             <li>
               <Link to="/collection" className={styles.navLink}>My Collection</Link>
             </li>
             <li>
               <Link to="/open-booster" className={styles.navLink}>Open Booster</Link>
+            </li>
+            <li>
+              <Link to="/chacal" className={styles.navLink}>Test Connection with Solidity</Link>
             </li>
           </ul>
         </nav>
