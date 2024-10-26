@@ -12,7 +12,7 @@ contract Collection is ERC721, Ownable {
         string cardNumber; //Id du modèle
     }
     struct Card{
-        uint modelNumber;// Le modèle associé
+        string modelNumber;// Le modèle associé
         uint cardId;//Id d'unicité
         address owner;//owner de la carte
     }
@@ -38,10 +38,11 @@ contract Collection is ERC721, Ownable {
     }
 
     // créer une carte
-    function _createCard(uint _modelCardId) public {
+    function _createCard(string memory _modelCardId) public returns(uint){
         // au return, ça va renvoyer l'indice de la nouvelle carte créée
         ownerCardCount[msg.sender]++;
         cards.push(Card(_modelCardId, cards.length, msg.sender));
+        return cards.length - 1;// Retourne l'indice de la carte ajoutée
     }
 
     function getRandomModelId() public view returns(uint) {
@@ -51,7 +52,7 @@ contract Collection is ERC721, Ownable {
     }
 
    function _createRandomCard() public {
-        cards.push(Card(getRandomModelId(), cards.length, msg.sender));
+        cards.push(Card(modelCards[getRandomModelId()].cardNumber, cards.length, msg.sender));
    }
 
 

@@ -33,10 +33,6 @@ contract Main is Ownable {
       collections[getCollectionByName(_collectionName)]._createModelCard(_cardNumber);
   }
 
-  function mint(uint _collectionId, address _owner) private onlyOwner(){
-
-  }
-
     function getCollections() public view returns(string[] memory){
         string[] memory res = new string[](count);
         for(uint i = 0; i < count;i++){
@@ -48,6 +44,13 @@ contract Main is Ownable {
   function assignCardToOwner(uint _collectionId, address _owner, uint nft) private onlyOwner {
       Collection collection = collections[_collectionId];
       collection.assignCard(nft, _owner);
+  }
+
+  function mint(string memory _collectionName,address _owner, string memory _modelCardId) private onlyOwner {
+      uint _collectionId = getCollectionByName(_collectionName);
+      Collection collection = collections[_collectionId];
+      uint nft = collection._createCard(_modelCardId);
+      assignCardToOwner(_collectionId, _owner, nft);
   }
 
   function assignRandomCardToOwner(uint _collectionId, address _owner) private onlyOwner {
