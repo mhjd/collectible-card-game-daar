@@ -30,7 +30,7 @@ export const SetsPage: React.FC<SetsPageProps> = ({ sets }) => {
     updateMaxHeight();
 
     // Add load event listeners to all images
-    const images = document.querySelectorAll('.${styles.setLogo}');
+    const images = document.querySelectorAll(`.${styles.setLogo}`);
     images.forEach(img => {
       img.addEventListener('load', updateMaxHeight);
     });
