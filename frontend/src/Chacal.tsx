@@ -54,6 +54,24 @@ const Chacal: React.FC = () => {
       "inputs": [
         {
           "internalType": "string",
+          "name": "_collectionName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_cardNumber",
+          "type": "string"
+        }
+      ],
+      "name": "addModelCard",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
           "name": "name",
           "type": "string"
         },
@@ -111,6 +129,29 @@ const Chacal: React.FC = () => {
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_collectionName",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_modelCardId",
+          "type": "string"
+        }
+      ],
+      "name": "mint",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -225,10 +266,42 @@ const Chacal: React.FC = () => {
 	
     }
   
-  const retrieveIntegerAndPrintIt = async () => {
+  async retrieveIntegerAndPrintIt () {
     const value = await getInteger();
     setInteger(value);
   };
+
+
+    async testingCollection_Modelcard_Card() {
+	try {
+            const accounts = await web3.eth.getAccounts();
+            const nameCollection = "maCollection";
+	    
+            await chacal.methods.createCollection(nameCollection, 10)
+		.send({ from: accounts[0] })
+		.on("receipt", function (receipt) {
+                    $("#txStatus").text("Successfully created " + nameCollection + "!");
+		});
+	    
+            const nameModelCard = "monModeleCard";
+	    
+            await chacal.methods.addModelCard(nameCollection, nameModelCard)
+		.send({ from: accounts[0] })
+		.on("receipt", function (receipt) {
+                    $("#txStatus").text("Successfully created " + nameModelCard + "!");
+		});
+	    
+            await chacal.methods.mint(nameCollection, accounts[0], nameModelCard)
+		.send({ from: accounts[0] })
+		.on("receipt", function (receipt) {
+                    $("#txStatus").text("Successfully created the NFT!");
+		});
+	    
+	} catch (error) {
+            $("#txStatus").text(error.message);
+	}
+    }
+
 
   return (
     <div className={styles.body}>

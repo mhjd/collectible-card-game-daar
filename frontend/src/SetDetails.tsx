@@ -59,6 +59,24 @@ const SetDetails = () => {
       "inputs": [
         {
           "internalType": "string",
+          "name": "_collectionName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_cardNumber",
+          "type": "string"
+        }
+      ],
+      "name": "addModelCard",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
           "name": "name",
           "type": "string"
         },
@@ -162,9 +180,21 @@ const SetDetails = () => {
     try {
       setAddingCollection(true);
       const accounts = await web3.eth.getAccounts();
+      
       await contract.methods.createCollection(setId, cards.length)
         .send({ from: accounts[0] });
-      alert('Collection added successfully!');
+
+      for (const card of cards) {
+        try {
+          await contract.methods.addModelCard(setId, card.id)
+            .send({ from: accounts[0] });
+          console.log(`Added card ${card.id} to collection ${setId}`);
+        } catch (cardError) {
+          console.error(`Failed to add card ${card.id}:`, cardError);
+        }
+      }
+      
+      alert('Collection and cards added successfully!');
     } catch (error) {
       console.error('Error adding collection:', error);
       alert('Failed to add collection');
