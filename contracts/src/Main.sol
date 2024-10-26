@@ -5,7 +5,7 @@ import "./Collection.sol";
 import "./ownable.sol";
 
 contract Main is Ownable {
-  int private count;
+  uint private count;
   mapping(uint => Collection) private collections;
 
   constructor() {
@@ -14,7 +14,7 @@ contract Main is Ownable {
 
   /* external ? c'était ça de base. Bizarre, external veut dire public mais peut pas être appelé à l'intérieur */
   /* j'aurais plutôt dit "private" perso, à moins qu'il faut que ça communique avec d'autre contrat */
-  function createCollection(string calldata name, int cardCount) external onlyOwner {
+  function createCollection(string calldata name, uint cardCount) external onlyOwner {
     collections[count++] = new Collection(name, cardCount);
   }
 
@@ -27,18 +27,21 @@ contract Main is Ownable {
   }
 
   function assignCardToOwner(uint _collectionId, address _owner, uint nft) private onlyOwner {
-      collections[_collectionId].cards[nft].owner = _owner;
-      collections[_collectionId].ownerCardCount[_owner]++; // On l'initialise nulle part mais normal en solidity je crois
+      Collection collection = collections[_collectionId];
+      // We can't directly modify the card's owner this way
+      // Instead, we should implement a function in Collection contract to handle this
+      collection.assignCard(nft, _owner);
   }
 
   function assignRandomCardToOwner(uint _collectionId, address _owner) private onlyOwner {
-      assignCardToOwner( );
+      uint randomNft = collections[_collectionId].getRandomModelId();
+      assignCardToOwner(_collectionId, _owner, randomNft);
   }
 
   // ouverture de deck
-  function assignXRandomCardsToOwner(int userId, uint X) private onlyOwner {
+  function assignXRandomCardsToOwner(uint _collectionId, address _owner, uint X) private onlyOwner {
       for (uint i = 0; i < X; i++) {
-	  assignRandomCardToOwner(userId);
+          assignRandomCardToOwner(_collectionId, _owner);
       }
   }
   

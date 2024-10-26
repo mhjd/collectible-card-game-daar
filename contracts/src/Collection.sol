@@ -9,10 +9,11 @@ contract Collection is ERC721, Ownable {
     string public name;
     uint public cardCount;
     struct ModelCard {
-        string cardNumber;//Id du modèle
+        uint cardNumber; //Id du modèle
+        string pathImg;  //Path to the image
     }
     struct Card{
-        string modelNumber;// Le modèle associé
+        uint modelNumber;// Le modèle associé
         uint cardId;//Id d'unicité
         address owner;//owner de la carte
     }
@@ -37,24 +38,24 @@ contract Collection is ERC721, Ownable {
 
 
     function _createModelCard(string memory _pathImg) public { //Un peu louche de la mettre public mais faudra voir avec la gestion de l'admin
-        modelCards.push(ModelCard(_pathImg, modelCards.length));
+        modelCards.push(ModelCard(modelCards.length, _pathImg));
     }
 
     // créer une carte
-    function _createCard(uint _modelCardId) public returns(uint) {
+    function _createCard(uint _modelCardId) public {
         // au return, ça va renvoyer l'indice de la nouvelle carte créée
         ownerCardCount[msg.sender]++;
-        return cards.push(Card(_modelCardId, cards.length, msg.sender));
+        cards.push(Card(_modelCardId, cards.length, msg.sender));
     }
 
-    function getRandomModelId() private view returns(uint) {
+    function getRandomModelId() public view returns(uint) {
         // On choisit de générer les nombres aléatoires selon certains critères complexes.
-        uint randomHash = uint(keccak256(abi.encodePacked(block.timestamp,msg.sender,block.difficulty)));
+        uint randomHash = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, block.prevrandao)));
         return randomHash % modelCards.length;
     }
 
-   function _createRandomCard() public returns(uint) {
-        return cards.push(Card(getRandomModelId(),cards.length,msg.sender));
+   function _createRandomCard() public {
+        cards.push(Card(getRandomModelId(), cards.length, msg.sender));
    }
 
 
@@ -67,15 +68,15 @@ contract Collection is ERC721, Ownable {
         return cards[_tokenId].owner;
     }
   
-    function _transfer(address _from, address _to, uint256 _tokenId) override private {
+    function _transfer(address _from, address _to, uint256 _tokenId) private {
         ownerCardCount[_to]++;
         ownerCardCount[msg.sender]--;
         cards[_tokenId].owner = _to;
         emit Transfer(_from, _to, _tokenId);
     }
 
-    function transfer(address _from, address _to, uint256 _tokenId) override public onlyOwnerOf(_tokenId){
-        _transfer(_from, _to, _tokenId);
+    function transfer(address _to, uint256 _tokenId) override public {
+        _transfer(msg.sender, _to, _tokenId);
     }
 
     function transferFrom(address _from, address _to, uint256 _tokenId) override external payable {
@@ -96,5 +97,11 @@ contract Collection is ERC721, Ownable {
     function takeOwnership(uint256 _tokenId) public{
         require(cardApprovals[_tokenId] == msg.sender);
         _transfer(cards[_tokenId].owner,msg.sender,_tokenId);
+    }
+
+    function assignCard(uint256 _tokenId, address _to) public onlyOwner {
+        cards[_tokenId].owner = _to;
+        ownerCardCount[_to]++;
+        emit Transfer(address(0), _to, _tokenId);
     }
 }
