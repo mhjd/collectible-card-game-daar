@@ -47,7 +47,7 @@ contract Collection is ERC721, Ownable {
         return cards.push(Card(_modelCardId, cards.length(), msg.sender));
     }
 
-    function getRandomModelId() private view returns (uint) {
+    function getRandomModelId() private view returns(uint) {
         // On choisit de générer les nombres aléatoires selon certains critères complexes.
         uint randomHash = uint(keccak256(abi.encodePacked(block.timestamp,msg.sender,block.difficulty)));
         return randomHash % modelCards.length;
@@ -55,11 +55,11 @@ contract Collection is ERC721, Ownable {
 
    function _createRandomCard() public returns(uint) {
         return cards.push(Card(getRandomModelId(),cards.length,msg.sender));
-    }
+   }
 
 
     // fonctions de la norme ERC
-    function balanceOf(address _owner) external view returns (uint256) {
+    function balanceOf(address _owner) override external view returns (uint256) {
         return ownerCardCount[_owner];
     }
 
@@ -67,18 +67,18 @@ contract Collection is ERC721, Ownable {
         return cards[_tokenId].owner;
     }
   
-    function _transfer(address _from, address _to, uint256 _tokenId) private {
+    function _transfer(address _from, address _to, uint256 _tokenId) override private {
         ownerCardCount[_to]++;
         ownerCardCount[msg.sender]--;
         cards[_tokenId].owner = _to;
         emit Transfer(_from, _to, _tokenId);
     }
 
-    function transfer(address _from, address _to, uint256 _tokenId) public onlyOwnerOf(_tokenId){
+    function transfer(address _from, address _to, uint256 _tokenId) override public onlyOwnerOf(_tokenId){
         _transfer(_from, _to, _tokenId);
     }
 
-    function transferFrom(address _from, address _to, uint256 _tokenId) external payable {
+    function transferFrom(address _from, address _to, uint256 _tokenId) override external payable {
         require (cards[_tokenId].owner == msg.sender || cardApprovals[_tokenId] == msg.sender);
         _transfer(_from, _to, _tokenId);
     }
@@ -88,7 +88,7 @@ contract Collection is ERC721, Ownable {
         _;
     }
 
-    function approve(address _approved, uint256 _tokenId) external payable onlyOwnerOf(_tokenId) {
+    function approve(address _approved, uint256 _tokenId) override external payable onlyOwnerOf(_tokenId) {
         cardApprovals[_tokenId] = _approved;
         emit Approval(msg.sender, _approved, _tokenId);
     }
