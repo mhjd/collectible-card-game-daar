@@ -18,8 +18,8 @@ contract Main is Ownable {
     collections[count++] = new Collection(name, cardCount);
   }
 
-  function addModelCard(uint CollectionId, string memory pathImg) private onlyOwner {
-      collections[CollectionId]._createModelCard(pathImg);
+  function addModelCard(uint CollectionId, string memory cardNumber) private onlyOwner {
+      collections[CollectionId]._createModelCard(cardNumber);
   }
 
   function mint(uint _collectionId, address _owner) private onlyOwner(){
