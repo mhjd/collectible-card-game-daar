@@ -6,6 +6,7 @@ import pokemon from 'pokemontcgsdk'
 const SetDetails = () => {
   const { setId } = useParams<{ setId: string }>()
   const [cards, setCards] = useState<any[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
     if (setId) {
@@ -15,12 +16,25 @@ const SetDetails = () => {
     }
   }, [setId])
 
+  const filteredCards = cards.filter(card =>
+    card.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
   return (
     <div className={styles.body}>
       <h1>Cards in Set: {setId}</h1>
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          placeholder="Search cards by name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={styles.searchInput}
+        />
+      </div>
       <div className={styles.cardGrid}>
         {cards.length > 0 ? (
-          cards.map(card => (
+          filteredCards.map(card => (
             <div key={card.id} className={styles.cardItem}>
               <h2>{card.name}</h2>
               <img src={card.images.small} alt={card.name} />

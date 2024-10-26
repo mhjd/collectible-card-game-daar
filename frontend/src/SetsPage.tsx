@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef, FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
 
 interface SetsPageProps {
@@ -7,6 +7,8 @@ interface SetsPageProps {
 }
 
 export const SetsPage: React.FC<SetsPageProps> = ({ sets }) => {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
   const [maxHeight, setMaxHeight] = useState<number>(0);
   const gridRef = useRef<HTMLUListElement>(null);
 
@@ -47,6 +49,23 @@ export const SetsPage: React.FC<SetsPageProps> = ({ sets }) => {
     <div className={styles.body}>
       <div className={styles.container}>
         <h1>Pokemon TCG Sets</h1>
+        <form 
+          className={styles.searchContainer}
+          onSubmit={(e: FormEvent) => {
+            e.preventDefault();
+            if (searchQuery.trim()) {
+              navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+            }
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Search for any Pokemon card..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={styles.searchInput}
+          />
+        </form>
         <ul className={`${styles.setGrid} ${styles.noListStyle}`} ref={gridRef}>
         {sets.map((set, index) => (
           <li 

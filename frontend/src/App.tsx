@@ -7,6 +7,7 @@ import pokemon from 'pokemontcgsdk'
 import SetDetails from './SetDetails'
 import { HomePage } from './HomePage'
 import { SetsPage } from './SetsPage'
+import SearchResults from './SearchResults'
 
 pokemon.configure({ apiKey: '45682ac3-6104-4885-bcce-9bceba950da5' })
 
@@ -65,6 +66,7 @@ export const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/sets" element={<SetsPage sets={sets} />} />
         <Route path="/set/:setId" element={<SetDetails />} />
+        <Route path="/search" element={<SearchResults />} />
       </Routes>
     </Router>
   )
