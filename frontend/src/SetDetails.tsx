@@ -37,7 +37,11 @@ const SetDetails = () => {
           filteredCards.map(card => (
             <div key={card.id} className={styles.cardItem}>
               <h2>{card.name}</h2>
-              <img src={card.images.small} alt={card.name} />
+              <img 
+                src={card.images.small} 
+                alt={card.name} 
+                style={{ width: '240px', height: '330px', objectFit: 'contain' }}
+              />
             </div>
           ))
         ) : (

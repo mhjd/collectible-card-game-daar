@@ -10,7 +10,7 @@ export const HomePage: React.FC = () => {
         <nav className={styles.navigation}>
           <ul className={styles.noListStyle}>
             <li>
-              <Link to="/setsa" className={styles.navLink}>Browse All Sets</Link>
+              <Link to="/sets" className={styles.navLink}>Browse All Sets</Link>
             </li>
             <li>
               <Link to="/collection" className={styles.navLink}>My Collection</Link>

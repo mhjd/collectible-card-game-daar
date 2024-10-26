@@ -197,7 +197,7 @@ const Chacal: React.FC = () => {
       console.log("Connected account:", accounts[0]);
 	const nameCollection = "cachalot";
 	const nameModelCard = "machinchouette";
-	await chacal.methods.addModelCard(name, nameModelCard)
+	await chacal.methods.addModelCard(nameCollection, nameModelCard)
         .send({ from: accounts[0] })
         .on("receipt", function (receipt) {
           $("#txStatus").text("Successfully created " + nameModelCard + "!");
@@ -236,6 +236,8 @@ const Chacal: React.FC = () => {
       <button className={styles.button} onClick={retrieveIntegerAndPrintIt}>Click on me to retrieve a integer</button>
       <button className={styles.button} onClick={createCollectionHardCoded}>Click on me to create a collection hard coded</button>
       <button className={styles.button} onClick={retrieveAllCollectionName}>Click on me to retrieveAllCollectionName</button>
+      <button className={styles.button} onClick={addModelCardToCollectionHardCoded}>Click on me to addModelCardToCollectionHardCoded</button>
+
       {integer !== null && <p>Retrieved Integer: {integer}</p>}
     </div>
   );
