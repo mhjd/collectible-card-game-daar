@@ -217,11 +217,10 @@ const Chacal: React.FC = () => {
 	await chacal.methods.createCollection(name, 10)
         .send({ from: accounts[0] })
         .on("receipt", function (receipt) {
-          $("#txStatus").text("Successfully created " + name + "!");
+          console.log("Successfully created " + name + "!");
         })
         .on("error", function (error) {
-
-          $("#txStatus").text(error);
+          console.error(error);
         });
 	      
       return result;
@@ -236,16 +235,15 @@ const Chacal: React.FC = () => {
       console.log("Calling _addModelCardToCollectionHardCoded() on contract at:", contractAdress);
       const accounts = await web3.eth.getAccounts();
       console.log("Connected account:", accounts[0]);
-	const nameCollection = "cachalot";
+	const nameCollection = "cachalot2";
 	const nameModelCard = "machinchouette";
 	await chacal.methods.addModelCard(nameCollection, nameModelCard)
         .send({ from: accounts[0] })
         .on("receipt", function (receipt) {
-          $("#txStatus").text("Successfully created " + nameModelCard + "!");
+          console.log("Successfully created " + nameModelCard + "!");
         })
         .on("error", function (error) {
-
-          $("#txStatus").text(error);
+          console.error(error);
         });
 	      
       return result;
@@ -257,48 +255,56 @@ const Chacal: React.FC = () => {
     }
   
     async function retrieveAllCollectionName() {
-
-      const accounts = await web3.eth.getAccounts();
-	const myCollections = await chacal.methods.getCollectionByName("cachalot2").call({
-        from: accounts[0]
-      });
-       console.log(myCollections);
-	
+      try {
+        const accounts = await web3.eth.getAccounts();
+        const collections = await chacal.methods.getCollections().call({
+          from: accounts[0]
+        });
+        console.log("All collections:", collections);
+      } catch (error) {
+        console.error("Error retrieving collections:", error.message);
+      }
     }
   
-  async retrieveIntegerAndPrintIt () {
-    const value = await getInteger();
-    setInteger(value);
-  };
+    const retrieveIntegerAndPrintIt = async () => {
+      const value = await getInteger();
+      setInteger(value);
+    };
 
 
-    async testingCollection_Modelcard_Card() {
-	try {
+    const testingCollection_Modelcard_Card = async () => {
+	console.log("enter in function")
+        try {
             const accounts = await web3.eth.getAccounts();
             const nameCollection = "maCollection";
 	    
+	    console.log("blocked?");
             await chacal.methods.createCollection(nameCollection, 10)
 		.send({ from: accounts[0] })
 		.on("receipt", function (receipt) {
-                    $("#txStatus").text("Successfully created " + nameCollection + "!");
+                    console.log("Successfully created " + nameCollection + "!");
 		});
+	    console.log("yes...");
 	    
+	    console.log("Coll created")
             const nameModelCard = "monModeleCard";
 	    
             await chacal.methods.addModelCard(nameCollection, nameModelCard)
 		.send({ from: accounts[0] })
 		.on("receipt", function (receipt) {
-                    $("#txStatus").text("Successfully created " + nameModelCard + "!");
+                    console.log("Successfully created " + nameModelCard + "!");
 		});
 	    
+	    console.log("model created")
             await chacal.methods.mint(nameCollection, accounts[0], nameModelCard)
 		.send({ from: accounts[0] })
 		.on("receipt", function (receipt) {
-                    $("#txStatus").text("Successfully created the NFT!");
+                    console.log("Successfully created the NFT!");
 		});
 	    
+	    console.log("card created")
 	} catch (error) {
-            $("#txStatus").text(error.message);
+            console.error(error.message);
 	}
     }
 
@@ -310,6 +316,7 @@ const Chacal: React.FC = () => {
       <button className={styles.button} onClick={createCollectionHardCoded}>Click on me to create a collection hard coded</button>
       <button className={styles.button} onClick={retrieveAllCollectionName}>Click on me to retrieveAllCollectionName</button>
       <button className={styles.button} onClick={addModelCardToCollectionHardCoded}>Click on me to addModelCardToCollectionHardCoded</button>
+      <button className={styles.button} onClick={testingCollection_Modelcard_Card}>Click on me to test top down</button>
 
       {integer !== null && <p>Retrieved Integer: {integer}</p>}
     </div>
