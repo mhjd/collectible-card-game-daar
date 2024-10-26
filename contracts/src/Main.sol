@@ -42,6 +42,11 @@ contract Main is Ownable {
           assignRandomCardToOwner(_collectionId, _owner);
       }
   }
+
+    function _test() public pure returns(uint) {
+        return 777;
+    }
+
   
 
 }
