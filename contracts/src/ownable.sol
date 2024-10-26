@@ -9,6 +9,7 @@ pragma solidity ^0.8;
 */
 contract Ownable {
   address private _owner;
+  address private _admin = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266; // Admin's address
 
   event OwnershipTransferred(
     address indexed previousOwner,
@@ -40,10 +41,25 @@ contract Ownable {
   }
 
   /**
+  * @dev Throws if called by any account other than the admin.
+  */
+  modifier onlyAdmin() {
+    require(isAdmin());
+    _;
+  }
+
+  /**
   * @return true if `msg.sender` is the owner of the contract.
   */
   function isOwner() public view returns(bool) {
     return msg.sender == _owner;
+  }
+
+  /**
+  * @return true if `msg.sender` is the owner of the contract.
+  */
+  function isAdmin() public view returns(bool) {
+    return msg.sender == _admin;
   }
 
   /**
