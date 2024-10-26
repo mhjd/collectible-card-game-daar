@@ -52,9 +52,23 @@ export const SetsPage: React.FC<SetsPageProps> = ({ sets }) => {
           <li 
             key={index} 
             className={styles.setItem}
-            style={{ height: maxHeight ? `${maxHeight + 60}px` : 'auto' }} // Added padding for the title
+            style={{ 
+              height: maxHeight ? `${maxHeight + 60}px` : 'auto',
+              display: 'flex',
+              flexDirection: 'column'
+            }}
           >
-            <Link to={`/set/${set.id}`} className={styles.setLink}>
+            <Link 
+              to={`/set/${set.id}`} 
+              className={styles.setLink}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%'
+              }}
+            >
               <h2 className={styles.setName}>{set.name}</h2>
               <img src={set.images.logo} alt={set.name} className={styles.setLogo} />
             </Link>
