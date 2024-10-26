@@ -95,6 +95,6 @@ contract Collection is ERC721, Ownable {
 
     function takeOwnership(uint256 _tokenId) public{
         require(cardApprovals[_tokenId] == msg.sender);
-        _transfer(ownerOf(_tokenId),msg.sender,_tokenId);
+        _transfer(cards[_tokenId].owner,msg.sender,_tokenId);
     }
 }
