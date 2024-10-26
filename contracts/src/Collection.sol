@@ -36,7 +36,7 @@ contract Collection is ERC721, Ownable {
     mapping (uint => address) private cardApprovals;
 
 
-    function _createModelCard(string _pathImg) public { //Un peu louche de la mettre public mais faudra voir avec la gestion de l'admin
+    function _createModelCard(string memory _pathImg) public { //Un peu louche de la mettre public mais faudra voir avec la gestion de l'admin
         modelCards.push(ModelCard(_pathImg, modelCards.length()));
     }
 
