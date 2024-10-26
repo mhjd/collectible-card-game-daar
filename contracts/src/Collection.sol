@@ -28,8 +28,6 @@ contract Collection is ERC721, Ownable {
 
     //mapping (uint => address) cardToOwner;  // on skip pr l'instant pcq dans la struct
 
-    // je vois pas l'intérêt de ça, pourquoi pas le calculer sur le moment ? vu que ça coute cher d'écrire sur la blockchain.
-    // j'ai juste copié zombieOwnership.sol donc je pense faut qu'il soit là, mais chelou
     mapping (address => uint) public ownerCardCount;
 
     // utile pour transferFrom et approve
