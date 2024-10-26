@@ -29,7 +29,7 @@ contract Main is Ownable {
       revert NameNotExisting();
   }
 
-  function addModelCard(string memory _collectionName, string memory _cardNumber) private onlyOwner {
+  function addModelCard(string memory _collectionName, string memory _cardNumber) external onlyOwner {
       collections[getCollectionByName(_collectionName)]._createModelCard(_cardNumber);
   }
 
