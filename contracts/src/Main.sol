@@ -22,8 +22,8 @@ contract Main is Ownable {
 
   function getCollectionByName(string memory _name) private view returns(uint){
       for(uint i = 0; i<count ; i++){
-          if(uint(keccak256(collections[count].name)) == uint(keccak256(_name))){
-              return count;
+          if(keccak256(abi.encodePacked(collections[i].name())) == keccak256(abi.encodePacked(_name))){
+              return i;
           }
       }
       revert NameNotExisting();
@@ -40,7 +40,7 @@ contract Main is Ownable {
     function getCollections() public view returns(string[] memory){
         string[] memory res = new string[](count);
         for(uint i = 0; i < count;i++){
-            res[i] = collections[i].name;
+            res[i] = collections[i].name();
         }
         return res;
     }
