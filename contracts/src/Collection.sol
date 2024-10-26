@@ -9,8 +9,7 @@ contract Collection is ERC721, Ownable {
     string public name;
     uint public cardCount;
     struct ModelCard {
-        uint cardNumber; //Id du modèle
-        string pathImg;  //Path to the image
+        string cardNumber; //Id du modèle
     }
     struct Card{
         uint modelNumber;// Le modèle associé
@@ -37,8 +36,8 @@ contract Collection is ERC721, Ownable {
     mapping (uint => address) private cardApprovals;
 
 
-    function _createModelCard(string memory _pathImg) public { //Un peu louche de la mettre public mais faudra voir avec la gestion de l'admin
-        modelCards.push(ModelCard(modelCards.length, _pathImg));
+    function _createModelCard(string memory _cardNumber) public { //Un peu louche de la mettre public mais faudra voir avec la gestion de l'admin
+        modelCards.push(ModelCard(modelCards.length, _cardNumber));
     }
 
     // créer une carte

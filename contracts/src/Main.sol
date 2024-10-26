@@ -28,8 +28,6 @@ contract Main is Ownable {
 
   function assignCardToOwner(uint _collectionId, address _owner, uint nft) private onlyOwner {
       Collection collection = collections[_collectionId];
-      // We can't directly modify the card's owner this way
-      // Instead, we should implement a function in Collection contract to handle this
       collection.assignCard(nft, _owner);
   }
 
