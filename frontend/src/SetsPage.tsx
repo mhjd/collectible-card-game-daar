@@ -64,13 +64,14 @@ export const SetsPage: React.FC<SetsPageProps> = ({ sets }) => {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
                 alignItems: 'center',
                 height: '100%'
               }}
             >
-              <h2 className={styles.setName}>{set.name}</h2>
-              <img src={set.images.logo} alt={set.name} className={styles.setLogo} />
+              <h2 className={styles.setName} style={{ marginBottom: '10px' }}>{set.name}</h2>
+              <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+                <img src={set.images.logo} alt={set.name} className={styles.setLogo} />
+              </div>
             </Link>
           </li>
         ))}
