@@ -172,7 +172,7 @@ const Chacal: React.FC = () => {
       console.log("Calling _createCollectionHardCoded() on contract at:", contractAdress);
       const accounts = await web3.eth.getAccounts();
       console.log("Connected account:", accounts[0]);
-	const name = "cachalot";
+	const name = "cachalot2";
 	await chacal.methods.createCollection(name, 10)
         .send({ from: accounts[0] })
         .on("receipt", function (receipt) {
@@ -218,7 +218,7 @@ const Chacal: React.FC = () => {
     async function retrieveAllCollectionName() {
 
       const accounts = await web3.eth.getAccounts();
-	const myCollections = await chacal.methods.getCollectionsByName("cachalot").call({
+	const myCollections = await chacal.methods.getCollectionByName("cachalot2").call({
         from: accounts[0]
       });
        console.log(myCollections);
