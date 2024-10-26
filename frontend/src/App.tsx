@@ -65,6 +65,7 @@ export const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/sets" element={<SetsPage sets={sets} />} />
         <Route path="/set/:setId" element={<SetDetails />} />
+        <Route path="/search" element={<SearchResults />} />
       </Routes>
     </Router>
   )
