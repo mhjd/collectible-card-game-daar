@@ -18,18 +18,29 @@ contract Main is Ownable {
     collections[count++] = new Collection(name, cardCount);
   }
 
-  function addModelCard(uint CollectionId, string memory cardNumber) private onlyOwner {
-      collections[CollectionId]._createModelCard(cardNumber);
+    error NameNotExisting();
+
+  function getCollectionByName(string memory _name) private view returns(uint){
+      for(uint i = 0; i<count ; i++){
+          if(uint(keccak256(collections[count].name)) == uint(keccak256(_name))){
+              return count;
+          }
+      }
+      revert NameNotExisting();
+  }
+
+  function addModelCard(string memory _collectionName, string memory _cardNumber) private onlyOwner {
+      collections[getCollectionByName(_collectionName)]._createModelCard(_cardNumber);
   }
 
   function mint(uint _collectionId, address _owner) private onlyOwner(){
 
   }
 
-    function getCollections() public view returns(Collection[] memory){
-        Collection[] memory res = new Collection[](count);
+    function getCollections() public view returns(string[] memory){
+        string[] memory res = new string[](count);
         for(uint i = 0; i < count;i++){
-            res[i] = collections[i];
+            res[i] = collections[i].name;
         }
         return res;
     }
