@@ -20,7 +20,7 @@ contract Main is Ownable {
 
     error NameNotExisting();
 
-  function getCollectionByName(string memory _name) private view returns(uint){
+  function getCollectionByName(string memory _name) public view returns(uint){
       for(uint i = 0; i<count ; i++){
           if(keccak256(abi.encodePacked(collections[i].name())) == keccak256(abi.encodePacked(_name))){
               return i;

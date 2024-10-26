@@ -14,6 +14,11 @@ const Chacal: React.FC = () => {
       "type": "constructor"
     },
     {
+      "inputs": [],
+      "name": "NameNotExisting",
+      "type": "error"
+    },
+    {
       "anonymous": false,
       "inputs": [
         {
@@ -64,13 +69,32 @@ const Chacal: React.FC = () => {
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        }
+      ],
+      "name": "getCollectionByName",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "getCollections",
       "outputs": [
         {
-          "internalType": "contract Collection[]",
+          "internalType": "string[]",
           "name": "",
-          "type": "address[]"
+          "type": "string[]"
         }
       ],
       "stateMutability": "view",
@@ -167,6 +191,7 @@ const Chacal: React.FC = () => {
   }
 
     async function addModelCardToCollectionHardCoded()  {
+	try {
       console.log("Calling _addModelCardToCollectionHardCoded() on contract at:", contractAdress);
       const accounts = await web3.eth.getAccounts();
       console.log("Connected account:", accounts[0]);
@@ -193,7 +218,7 @@ const Chacal: React.FC = () => {
     async function retrieveAllCollectionName() {
 
       const accounts = await web3.eth.getAccounts();
-	const myCollections = await chacal.methods.getCollections().call({
+	const myCollections = await chacal.methods.getCollectionsByName("cachalot").call({
         from: accounts[0]
       });
        console.log(myCollections);
