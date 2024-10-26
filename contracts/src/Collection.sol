@@ -27,15 +27,14 @@ contract Collection is ERC721, Ownable {
     Card[] public cards;
 
     //mapping (uint => address) cardToOwner;  // on skip pr l'instant pcq dans la struct
-
     mapping (address => uint) public ownerCardCount;
 
     // utile pour transferFrom et approve
     mapping (uint => address) private cardApprovals;
 
 
-    function _createModelCard(string memory _cardNumber) public { //Un peu louche de la mettre public mais faudra voir avec la gestion de l'admin
-        modelCards.push(ModelCard(modelCards.length, _cardNumber));
+    function _createModelCard(string memory _cardNumber) public onlyOwner() {
+        modelCards.push(ModelCard( _cardNumber));
     }
 
     // créer une carte
