@@ -186,6 +186,60 @@ body {
   margin: 0 auto;
 }
 
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 300px;
+  color: black;
+}
+
+.modalContent {
+  text-align: center;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modalButtons button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #4a90e2;
+  color: white;
+  font-size: 16px;
+}
+
+.modalButtons button:hover {
+  background-color: #357abd;
+}
+
+.modalButtons button:last-child {
+  background-color: #e74c3c;
+}
+
+.modalButtons button:last-child:hover {
+  background-color: #c0392b;
+}
+
 .cell {
   background: #ddd;
 }

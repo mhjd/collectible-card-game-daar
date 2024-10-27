@@ -10,6 +10,8 @@ import { SetsPage } from './SetsPage'
 import SearchResults from './SearchResults'
 import Chacal from './Chacal'
 import OpenBooster from './OpenBooster'
+import MarketPlace from './MarketPlace'
+import MarketSetDetails from './MarketSetDetails'
 import BoosterResultPage from './BoosterResultPage'
 import CollectionPage from './CollectionPage'
 import UsersPage from './UsersPage'
@@ -79,6 +81,8 @@ export const App = () => {
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/users" element={<UsersPage />} />
         <Route path="/user-collection/:address" element={<UserCollectionPage />} />
+        <Route path="/marketplace" element={<MarketPlace />} />
+        <Route path="/market-set/:setId" element={<MarketSetDetails />} />
       </Routes>
     </Router>
   )
