@@ -72,8 +72,17 @@ contract Main is Ownable {
         return card.owner == _user;
     }
 
+    function getTotalCardsOfUser(address _user) private view returns(uint){
+        uint res = 0;
+        for(uint i = 0; i < count ; i++){
+            res = res + collections[i].getOwnerCardCount(_user);
+        }
+        return res;
+    }
+
     function getUserCards(address _user) external view returns(Collection.Card[] memory){
-        Collection.Card[] memory user_cards;
+        uint totalCards = getTotalCardsOfUser(_user);
+        Collection.Card[] memory user_cards = new Collection.Card[](totalCards);
 
         for(uint i = 0; i<count; i++){
             uint cpt = 0;
