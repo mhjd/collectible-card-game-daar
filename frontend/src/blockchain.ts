@@ -20,6 +20,22 @@ export const getBlockchainCollections = async () => {
   }
 };
 
+export const openABooster = async (collectionId: string): Promise<string[]> => {
+  try {
+      console.log("collecntion : ", collectionId);
+      const cards = await contract.methods.assignXRandomCardsToOwner(collectionId, accounts[0], 10)
+      .send({ from: accounts[0] });
+    
+      console.log("affichage : ")
+      
+      console.log("contenu : ", cards)
+    return cards.map((card: any) => card.modelNumber);
+  } catch (error) {
+    console.error('Error opening booster:', error);
+    return [];
+  }
+}
+
 export const addCollectionToBlockchain = async (setId: string, cards: any[]) => {
   try {
     await contract.methods.createCollection(setId, cards.length)

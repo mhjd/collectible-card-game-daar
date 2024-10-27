@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import pokemon from 'pokemontcgsdk';
 import styles from './styles.module.css';
 import CollectionGrid from './CollectionGrid';
-import { initBlockchain, getBlockchainCollections } from './blockchain';
+import BoosterResult from './BoosterResult';
+import { initBlockchain, getBlockchainCollections, openABooster } from './blockchain';
 
 
 interface OpenBoosterProps {
@@ -12,6 +13,10 @@ interface OpenBoosterProps {
 const OpenBooster: React.FC<OpenBoosterProps> = ({ sets }) => {
   const [blockchainCollections, setBlockchainCollections] = useState<string[]>([]);
   const [filteredSets, setFilteredSets] = useState<any[]>([]);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [selectedSet, setSelectedSet] = useState<string>('');
+  const [boosterResults, setBoosterResults] = useState<string[]>([]);
+  const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -62,7 +67,19 @@ const OpenBooster: React.FC<OpenBoosterProps> = ({ sets }) => {
   }, []);
 
   const handleCollectionClick = (collectionId: string) => {
-    console.log('Selected collection:', collectionId);
+    setSelectedSet(collectionId);
+    setShowConfirm(true);
+  };
+
+  const handleConfirmOpen = async () => {
+    setShowConfirm(false);
+    try {
+      const cards = await openABooster(selectedSet);
+      setBoosterResults(cards);
+      setShowResults(true);
+    } catch (error) {
+      console.error('Error opening booster:', error);
+    }
   };
 
   return (
@@ -74,6 +91,26 @@ const OpenBooster: React.FC<OpenBoosterProps> = ({ sets }) => {
           onCollectionClick={handleCollectionClick}
           sets={filteredSets}
         />
+
+        {showConfirm && (
+          <div className={styles.modal}>
+            <div className={styles.modalContent}>
+              <h2>Confirm Opening</h2>
+              <p>Are you sure you want to open a booster of {selectedSet} Set?</p>
+              <div className={styles.modalButtons}>
+                <button onClick={handleConfirmOpen}>Yes</button>
+                <button onClick={() => setShowConfirm(false)}>No</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showResults && (
+          <BoosterResult 
+            cards={boosterResults} 
+            onClose={() => setShowResults(false)}
+          />
+        )}
       </div>
     </div>
   );

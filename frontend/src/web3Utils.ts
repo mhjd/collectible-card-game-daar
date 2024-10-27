@@ -14,6 +14,11 @@ export const myAbi = [
       "type": "error"
     },
     {
+      "inputs": [],
+      "name": "notAllCardsGet",
+      "type": "error"
+    },
+    {
       "anonymous": false,
       "inputs": [
         {
@@ -67,6 +72,52 @@ export const myAbi = [
       "inputs": [
         {
           "internalType": "string",
+          "name": "_collectionName",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "X",
+          "type": "uint256"
+        }
+      ],
+      "name": "assignXRandomCardsToOwner",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "modelNumber",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "cardId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct Collection.Card[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
           "name": "name",
           "type": "string"
         },
@@ -82,25 +133,6 @@ export const myAbi = [
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_name",
-          "type": "string"
-        }
-      ],
-      "name": "getCollectionByName",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "getCollections",
       "outputs": [
@@ -108,6 +140,55 @@ export const myAbi = [
           "internalType": "string[]",
           "name": "",
           "type": "string[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "getUserCards",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "modelNumber",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "cardId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct Collection.Card[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isAdmin",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -129,6 +210,47 @@ export const myAbi = [
     {
       "inputs": [
         {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "modelNumber",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "cardId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct Collection.Card",
+          "name": "card",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "isOwnerOf",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "string",
           "name": "_collectionName",
           "type": "string"
@@ -145,7 +267,30 @@ export const myAbi = [
         }
       ],
       "name": "mint",
-      "outputs": [],
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "modelNumber",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "cardId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct Collection.Card",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
