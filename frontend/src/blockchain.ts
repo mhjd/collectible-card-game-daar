@@ -28,10 +28,10 @@ export const openABooster = async (collectionId: string): Promise<string[]> => {
     }
 
     // Vérifier si le compte est admin
-    const isAdmin = await contract.methods.isAdmin().call({ from: currentAccount });
-    if (!isAdmin) {
-      throw new Error('Account is not admin');
-    }
+    // const isAdmin = await contract.methods.isAdmin().call({ from: currentAccount });
+    // if (!isAdmin) {
+    //   throw new Error('Account is not admin');
+    // }
 
     console.log("collection : ", collectionId);
     const numCards = 10;
