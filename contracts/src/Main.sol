@@ -53,8 +53,8 @@ contract Main is Ownable {
 
     function assignRandomCardToOwner(string memory _collectionName, address _owner) private onlyAdmin returns(Collection.Card memory) {
         uint _collectionId = getCollectionByName(_collectionName);
-      uint randomNft = collections[_collectionId].getRandomModelId();
-      return assignCardToOwner(_collectionName, _owner, randomNft);
+      string randomNft = collections[_collectionId].getRandomModelId();
+      return mint(_collectionName, _owner, randomNft);
     }
 
     // ouverture de booster
