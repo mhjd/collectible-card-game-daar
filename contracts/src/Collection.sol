@@ -56,7 +56,7 @@ contract Collection is ERC721, Ownable {
     function getRandomModelId() public view returns(string memory) {
         // On choisit de générer les nombres aléatoires selon certains critères complexes.
         uint randomHash = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, block.prevrandao)));
-        return modelCards[randomHash % modelCards.length];
+        return modelCards[randomHash % modelCards.length].cardNumber;
     }
 
    function _createRandomCard() public {
