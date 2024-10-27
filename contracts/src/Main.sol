@@ -39,8 +39,8 @@ contract Main is Ownable {
         return res;
     }
 
-    function assignCardToOwner(uint _collectionId, address _owner, uint nft) private onlyAdmin returns(Collection.Card memory) {
-      Collection collection = collections[_collectionId];
+    function assignCardToOwner(string memory _collectionName, address _owner, uint nft) private onlyAdmin returns(Collection.Card memory) {
+      Collection collection = collections[getCollectionByName(_collectionName)];
       return collection.assignCard(nft, _owner);
     }
 
@@ -48,19 +48,20 @@ contract Main is Ownable {
       uint _collectionId = getCollectionByName(_collectionName);
       Collection collection = collections[_collectionId];
       uint nft = collection._createCard(_modelCardId);
-      return assignCardToOwner(_collectionId, _owner, nft);
+      return assignCardToOwner(_collectionName, _owner, nft);
     }
 
-    function assignRandomCardToOwner(uint _collectionId, address _owner) private onlyAdmin returns(Collection.Card memory) {
+    function assignRandomCardToOwner(string memory _collectionName, address _owner) private onlyAdmin returns(Collection.Card memory) {
+        uint _collectionId = getCollectionByName(_collectionName);
       uint randomNft = collections[_collectionId].getRandomModelId();
-      return assignCardToOwner(_collectionId, _owner, randomNft);
+      return assignCardToOwner(_collectionName, _owner, randomNft);
     }
 
     // ouverture de booster
-    function assignXRandomCardsToOwner(uint _collectionId, address _owner, uint X) private onlyAdmin  returns(Collection.Card[] memory){
+    function assignXRandomCardsToOwner(string memory _collectionName, address _owner, uint X) private onlyAdmin  returns(Collection.Card[] memory){
         Collection.Card[] memory created_cards;
         for (uint i = 0; i < X; i++) {
-          created_cards[i] = assignRandomCardToOwner(_collectionId, _owner);
+          created_cards[i] = assignRandomCardToOwner(_collectionName, _owner);
         }
         return created_cards;
     }
