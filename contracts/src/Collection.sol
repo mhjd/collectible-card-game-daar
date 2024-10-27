@@ -53,16 +53,18 @@ contract Collection is ERC721, Ownable {
         return cards.length - 1;// Retourne l'indice de la carte ajoutée
     }
 
-    function getRandomModelId() public view returns(string memory) {
+    uint private randNonce = 0;
+
+    function getRandomModelId() public returns(string memory) {
         // On choisit de générer les nombres aléatoires selon certains critères complexes.
-        uint randomHash = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, block.prevrandao)));
+        randNonce++;
+        uint randomHash = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randNonce)));
         return modelCards[randomHash % modelCards.length].cardNumber;
     }
 
    function _createRandomCard() public {
         cards.push(Card(getRandomModelId(), cards.length, msg.sender));
    }
-
 
     // fonctions de la norme ERC
     function balanceOf(address _owner) override external view returns (uint256) {
