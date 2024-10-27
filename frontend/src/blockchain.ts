@@ -22,12 +22,17 @@ export const getBlockchainCollections = async () => {
 
 export const openABooster = async (collectionId: string): Promise<string[]> => {
   try {
-      console.log("collecntion : ", collectionId);
+      console.log("collection : ", collectionId);
 const numCards = 10;
 
+    await contract.methods
+      .assignXRandomCardsToOwner(collectionId, accounts[0], numCards)
+      .send({ from: accounts[0] });
+    
     const cards = await contract.methods
-    .assignXRandomCardsToOwner(collectionId, accounts[0], numCards)
-    .call({ from: accounts[0] });
+      .getLastAssignedCards(accounts[0])
+      .call({ from: accounts[0] });
+   
 
     
       console.log("affichage : ")
@@ -57,5 +62,20 @@ export const addCollectionToBlockchain = async (setId: string, cards: any[]) => 
   } catch (error) {
     console.error('Error adding collection:', error);
     return false;
+  }
+};
+
+export const getUserCardsOfUser = async () => {
+  try {
+    if (!accounts || accounts.length === 0) {
+      throw new Error('No accounts available. Please initialize blockchain first.');
+    }
+    const cards = await contract.methods.getUserCards(accounts[0])
+      .call({ from: accounts[0] });
+    console.log(cards);
+    return cards.map(card => card.modelNumber);
+  } catch (error) {
+    console.error('Error fetching user cards:', error);
+    return [];
   }
 };
