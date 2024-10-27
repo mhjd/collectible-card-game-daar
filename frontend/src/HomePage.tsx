@@ -33,7 +33,7 @@ export const HomePage: React.FC = () => {
             </li>
             <li>
               <Link to="/marketplace">
-                <button className={styles.navLink} role="button"><span className={styles.text}>Marché</span></button>
+                <button className={styles.navLink} role="button"><span className={styles.text}>Market Place</span></button>
               </Link>
             </li>
             <li>
