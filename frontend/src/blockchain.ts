@@ -11,8 +11,10 @@ export const initBlockchain = async () => {
 
 export const getBlockchainCollections = async () => {
   try {
+
+    const currentAccount = (window as any).ethereum.selectedAddress;
     return await contract.methods.getCollections().call({
-      from: accounts[0]
+      from: currentAccount
     });
   } catch (error) {
     console.error('Error fetching blockchain collections:', error);
@@ -78,8 +80,10 @@ export const addCollectionToBlockchain = async (setId: string, cards: any[]) => 
 
 export const getUserCardsByAddress = async (address: string) => {
   try {
+
+    const currentAccount = (window as any).ethereum.selectedAddress;
     const cards = await contract.methods.getUserCards(address)
-      .call({ from: accounts[0] });
+      .call({ from: currentAccount });
     console.log(cards);
     return cards.map(card => card.modelNumber);
   } catch (error) {
@@ -93,8 +97,10 @@ export const getUserCardsOfUser = async () => {
     if (!accounts || accounts.length === 0) {
       throw new Error('No accounts available. Please initialize blockchain first.');
     }
-    const cards = await contract.methods.getUserCards(accounts[0])
-      .call({ from: accounts[0] });
+
+    const currentAccount = (window as any).ethereum.selectedAddress;
+    const cards = await contract.methods.getUserCards(currentAccount)
+      .call({ from: currentAccount });
     console.log(cards);
     return cards.map(card => card.modelNumber);
   } catch (error) {
