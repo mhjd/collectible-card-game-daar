@@ -82,6 +82,7 @@ contract Main is Ownable {
 
     function getUserCards(address _user) external view returns(Collection.Card[] memory){
         uint totalCards = getTotalCardsOfUser(_user);
+        uint nbCardsAdded = 0;
         Collection.Card[] memory user_cards = new Collection.Card[](totalCards);
 
         for(uint i = 0; i<count; i++){
@@ -95,7 +96,8 @@ contract Main is Ownable {
                 }
                 Collection.Card memory currentCard = collections[i].getCard(j);
                 if(isOwnerOf(currentCard,_user)){
-                    user_cards.push(currentCard);
+                    user_cards[nbCardsAdded] = currentCard;
+                    nbCardsAdded++;
                     cpt++;
                 }
             }
