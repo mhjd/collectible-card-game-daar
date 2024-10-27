@@ -98,11 +98,11 @@ contract Main is Ownable {
             uint cptMax = collections[i].getOwnerCardCount(_user);
             uint length = collections[i].getCardsLength();
             for(uint j = 0; j < length; j++){
+                Collection.Card memory currentCard = collections[i].getCard(j);
                 if(cpt == cptMax){
                     // Si c'était la derniere carte du user on peut s'arreter
                     j = length;
                 }
-                Collection.Card memory currentCard = collections[i].getCard(j);
                 if(isOwnerOf(currentCard,_user)){
                     user_cards[nbCardsAdded] = currentCard;
                     nbCardsAdded++;
