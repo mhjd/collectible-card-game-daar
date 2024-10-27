@@ -60,7 +60,7 @@ contract Collection is ERC721, Ownable {
     }
 
    function _createRandomCard() public {
-        cards.push(Card(modelCards[getRandomModelId()].cardNumber, cards.length, msg.sender));
+        cards.push(Card(getRandomModelId(), cards.length, msg.sender));
    }
 
 
