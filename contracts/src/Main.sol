@@ -84,7 +84,7 @@ contract Main is Ownable {
                     // Si c'était la derniere carte du user on peut s'arreter
                     j = length;
                 }
-                Collection.Card currentCard = collections[i].getCard(j);
+                Collection.Card memory currentCard = collections[i].getCard(j);
                 if(isOwnerOf(currentCard,_user)){
                     user_cards.push(currentCard);
                     cpt++;
