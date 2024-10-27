@@ -60,10 +60,10 @@ contract Main is Ownable {
     // ouverture de booster
     function assignXRandomCardsToOwner(string memory _collectionName, address _owner, uint nb) public onlyAdmin  returns(string[] memory){
         string[] memory model_cards_of_nft_generated = new string[](nb);
-	Collection.Card  memory myCard;
+        Collection.Card memory myCard;
         for (uint i = 0; i < nb; i++) {
-	    myCard = assignRandomCardToOwner(_collectionName, _owner);
-	    model_cards_of_nft_generated[i] = myCard.modelNumber;
+            myCard = assignRandomCardToOwner(_collectionName, _owner);
+            model_cards_of_nft_generated[i] = myCard.modelNumber;
         }
         return model_cards_of_nft_generated;
     }
