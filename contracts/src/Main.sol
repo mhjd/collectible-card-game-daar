@@ -58,7 +58,7 @@ contract Main is Ownable {
     }
 
     // ouverture de booster
-    function assignXRandomCardsToOwner(string memory _collectionName, address _owner, uint X) private onlyAdmin  returns(Collection.Card[] memory){
+    function assignXRandomCardsToOwner(string memory _collectionName, address _owner, uint X) public onlyAdmin  returns(Collection.Card[] memory){
         Collection.Card[] memory created_cards;
         for (uint i = 0; i < X; i++) {
           created_cards[i] = assignRandomCardToOwner(_collectionName, _owner);
