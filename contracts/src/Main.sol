@@ -39,28 +39,54 @@ contract Main is Ownable {
         return res;
     }
 
-    function assignCardToOwner(uint _collectionId, address _owner, uint nft) private onlyAdmin {
+    function assignCardToOwner(uint _collectionId, address _owner, uint nft) private onlyAdmin returns(Collection.Card memory) {
       Collection collection = collections[_collectionId];
-      collection.assignCard(nft, _owner);
+      return collection.assignCard(nft, _owner);
     }
 
-    function mint(string memory _collectionName,address _owner, string memory _modelCardId) public onlyAdmin {
+    function mint(string memory _collectionName,address _owner, string memory _modelCardId) public onlyAdmin returns(Collection.Card memory) {
       uint _collectionId = getCollectionByName(_collectionName);
       Collection collection = collections[_collectionId];
       uint nft = collection._createCard(_modelCardId);
-      assignCardToOwner(_collectionId, _owner, nft);
+      return assignCardToOwner(_collectionId, _owner, nft);
     }
 
-    function assignRandomCardToOwner(uint _collectionId, address _owner) private onlyAdmin {
+    function assignRandomCardToOwner(uint _collectionId, address _owner) private onlyAdmin returns(Collection.Card memory) {
       uint randomNft = collections[_collectionId].getRandomModelId();
-      assignCardToOwner(_collectionId, _owner, randomNft);
+      return assignCardToOwner(_collectionId, _owner, randomNft);
     }
 
     // ouverture de booster
-    function assignXRandomCardsToOwner(uint _collectionId, address _owner, uint X) private onlyAdmin {
-      for (uint i = 0; i < X; i++) {
-          assignRandomCardToOwner(_collectionId, _owner);
-      }
+    function assignXRandomCardsToOwner(uint _collectionId, address _owner, uint X) private onlyAdmin  returns(Collection.Card[] memory){
+        Collection.Card[] memory created_cards;
+        for (uint i = 0; i < X; i++) {
+          created_cards[i] = assignRandomCardToOwner(_collectionId, _owner);
+        }
+        return created_cards;
+    }
+
+    function isOwnerOf (Collection.Card memory card, address _user) public pure returns(bool){
+        return card.owner == _user;
+    }
+
+    error notAllCardsGet();
+
+    function getUserCards(address _user) external view returns(Collection.Card[] memory){
+        Collection.Card[] memory user_cards;
+
+        for(uint i = 0; i<count; i++){
+            Collection.Card[] memory current_nfts = collections[i].getCards();
+            for(uint j = 0; j < current_nfts.length; j++){
+                if(isOwnerOf(current_nfts[j],_user)){
+                    user_cards[user_cards.length] = current_nfts[j];
+                    if(collections[i].getOwnerCardCount(_user) == user_cards.length){
+                    // Si c'était la derniere carte du user on peut s'arreter, on n'est pas sensés s'arrêter ailleurs
+                        return user_cards;
+                    }
+                }
+            }
+        }
+        revert notAllCardsGet();
     }
 
     function _test() public pure returns(uint) {

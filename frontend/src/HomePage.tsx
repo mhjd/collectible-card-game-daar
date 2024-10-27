@@ -7,7 +7,7 @@ export const HomePage: React.FC = () => {
   return (
     <div className={styles.body}>
       <div className={styles.container}>
-        <img src={logo} alt="Pokémon TCG Logo" width="60%" />
+        <img src={logo} alt="Pokémon TCG Logo" className={styles.logo}/>
         <nav className={styles.navigation}>
           <ul className={styles.noListStyle}>
             <li>
