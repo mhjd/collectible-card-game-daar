@@ -14,11 +14,6 @@ export const myAbi = [
       "type": "error"
     },
     {
-      "inputs": [],
-      "name": "notAllCardsGet",
-      "type": "error"
-    },
-    {
       "anonymous": false,
       "inputs": [
         {
@@ -118,6 +113,25 @@ export const myAbi = [
     {
       "inputs": [],
       "name": "getCollections",
+      "outputs": [
+        {
+          "internalType": "string[]",
+          "name": "",
+          "type": "string[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "getLastAssignedCards",
       "outputs": [
         {
           "internalType": "string[]",
