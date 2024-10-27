@@ -9,6 +9,7 @@ import { HomePage } from './HomePage'
 import { SetsPage } from './SetsPage'
 import SearchResults from './SearchResults'
 import Chacal from './Chacal'
+import OpenBooster from './OpenBooster'
 
 pokemon.configure({ apiKey: '45682ac3-6104-4885-bcce-9bceba950da5' })
 
@@ -68,7 +69,8 @@ export const App = () => {
         <Route path="/sets" element={<SetsPage sets={sets} />} />
         <Route path="/set/:setId" element={<SetDetails />} />
         <Route path="/search" element={<SearchResults />} />
-	<Route path="/chacal" element={<Chacal />} />
+        <Route path="/open-booster" element={<OpenBooster />} />
+        <Route path="/chacal" element={<Chacal />} />
       </Routes>
     </Router>
   )
