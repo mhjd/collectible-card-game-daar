@@ -22,16 +22,27 @@ export const getBlockchainCollections = async () => {
 
 export const openABooster = async (collectionId: string): Promise<string[]> => {
   try {
-      console.log("collection : ", collectionId);
-const numCards = 10;
+    const currentAccount = (window as any).ethereum.selectedAddress;
+    if (!currentAccount) {
+      throw new Error('No MetaMask account connected');
+    }
 
+    // Vérifier si le compte est admin
+    const isAdmin = await contract.methods.isAdmin().call({ from: currentAccount });
+    if (!isAdmin) {
+      throw new Error('Account is not admin');
+    }
+
+    console.log("collection : ", collectionId);
+    const numCards = 10;
+    
     await contract.methods
-      .assignXRandomCardsToOwner(collectionId, accounts[0], numCards)
-      .send({ from: accounts[0] });
+      .assignXRandomCardsToOwner(collectionId, currentAccount, numCards)
+      .send({ from: currentAccount });
     
     const cards = await contract.methods
-      .getLastAssignedCards(accounts[0])
-      .call({ from: accounts[0] });
+      .getLastAssignedCards(currentAccount)
+      .call({ from: currentAccount });
    
 
     
