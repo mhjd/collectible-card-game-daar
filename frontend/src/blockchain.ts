@@ -23,8 +23,12 @@ export const getBlockchainCollections = async () => {
 export const openABooster = async (collectionId: string): Promise<string[]> => {
   try {
       console.log("collecntion : ", collectionId);
-      const cards = await contract.methods.assignXRandomCardsToOwner(collectionId, accounts[0], 10)
-      .send({ from: accounts[0] });
+const numCards = 10;
+
+    const cards = await contract.methods
+    .assignXRandomCardsToOwner(collectionId, accounts[0], numCards)
+    .call({ from: accounts[0] });
+
     
       console.log("affichage : ")
       

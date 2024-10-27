@@ -82,33 +82,16 @@ export const myAbi = [
         },
         {
           "internalType": "uint256",
-          "name": "X",
+          "name": "nb",
           "type": "uint256"
         }
       ],
       "name": "assignXRandomCardsToOwner",
       "outputs": [
         {
-          "components": [
-            {
-              "internalType": "string",
-              "name": "modelNumber",
-              "type": "string"
-            },
-            {
-              "internalType": "uint256",
-              "name": "cardId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            }
-          ],
-          "internalType": "struct Collection.Card[]",
+          "internalType": "string[]",
           "name": "",
-          "type": "tuple[]"
+          "type": "string[]"
         }
       ],
       "stateMutability": "nonpayable",
