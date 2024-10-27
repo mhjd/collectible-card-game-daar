@@ -11,8 +11,16 @@ body {
   background: radial-gradient(circle, rgba(91,0,243,1) 0%, rgba(5,6,45,1) 100%);
 }
 .logo {
-  width : 75%;
-  height : auto;
+  /*width : 75%;*/
+  /*height : auto;*/
+  width: 125%; /* Fixed width for the logo */
+  height: auto;  /* Maintain aspect ratio */
+}
+.steven, .lucario {
+  max-width: 30%; /* Images take up to 30% of container width */
+  height: 100%;     /* Maintain aspect ratio */
+  object-fit: contain; /* Ensure images fit within max-width/height without distortion */
+  margin : auto;
 }
 .body {
   display: flex;
@@ -28,6 +36,31 @@ body {
   max-width: 1200px;
   width: 90%;
   margin: 0 auto;
+}
+
+.containerHomePage {
+  max-width: 1200px;
+  width: 90%;
+  margin: 0 auto;
+  display: flex; /* Use Flexbox */
+  align-items: flex-start; /* Align items to the top */
+  justify-content: space-between; /* Distribute space between items */
+  gap: 20px;
+}
+
+.logoContainer {
+  display: flex;  /* Make logoContainer a flex container */
+  flex-direction: column; /* Stack logo and nav vertically */
+  align-items: center; /* Center horizontally */
+  width: 30%; /* Adjust width as needed */
+}
+
+
+.navigation {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .cardGrid {
@@ -124,7 +157,6 @@ body {
   padding: 15px;
   border-radius: 8px;
   transition: transform 0.2s ease-in-out;
-  background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
