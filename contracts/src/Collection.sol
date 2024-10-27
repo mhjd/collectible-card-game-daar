@@ -23,7 +23,7 @@ contract Collection is ERC721, Ownable {
     }
 
    //INIT
-    ModelCard[] public modelCards; // public ?
+    ModelCard[] public modelCards;
     Card[] public cards;
 
     function getCard(uint index) external view returns(Card memory){
@@ -34,7 +34,6 @@ contract Collection is ERC721, Ownable {
         return cards.length;
     }
 
-    //mapping (uint => address) cardToOwner;  // on skip pr l'instant pcq dans la struct
     mapping (address => uint) public ownerCardCount;
 
     function getOwnerCardCount(address _owner) external view returns(uint) {
@@ -113,7 +112,6 @@ contract Collection is ERC721, Ownable {
     function assignCard(uint256 _tokenId, address _to) public onlyOwner returns(Card memory) {
         cards[_tokenId].owner = _to;
         ownerCardCount[_to]++;
-        //emit Transfer(address(0), _to, _tokenId); ??????
         return cards[_tokenId];
     }
 }
