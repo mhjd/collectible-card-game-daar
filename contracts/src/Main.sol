@@ -89,6 +89,9 @@ contract Main is Ownable {
                 }
             }
         }
+        if(count == 0) {
+            return user_cards;
+        }
         revert notAllCardsGet();
     }
 
