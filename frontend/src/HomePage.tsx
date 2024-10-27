@@ -32,18 +32,13 @@ export const HomePage: React.FC = () => {
               </Link>
             </li>
             <li>
-              <Link to="/chacal">
-                <button className={styles.navLink} role="button"><span className={styles.text}>Tests</span></button>
+              <Link to="/marketplace">
+                <button className={styles.navLink} role="button"><span className={styles.text}>Marché</span></button>
               </Link>
             </li>
             <li>
               <Link to="/users">
                 <button className={styles.navLink} role="button"><span className={styles.text}>Utilisateurs</span></button>
-              </Link>
-            </li>
-            <li>
-              <Link to="/marketplace">
-                <button className={styles.navLink} role="button"><span className={styles.text}>Marché</span></button>
               </Link>
             </li>
           </ul>

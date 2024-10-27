@@ -76,7 +76,6 @@ export const App = () => {
         <Route path="/set/:setId" element={<SetDetails />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/open-booster" element={<OpenBooster />} />
-        <Route path="/chacal" element={<Chacal />} />
         <Route path="/booster-result" element={<BoosterResultPage />} />
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/users" element={<UsersPage />} />

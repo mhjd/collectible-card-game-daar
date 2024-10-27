@@ -32,11 +32,6 @@ export const openABooster = async (collectionId: string): Promise<string[]> => {
       throw new Error('No MetaMask account connected');
     }
 
-    // Vérifier si le compte est admin
-    // const isAdmin = await contract.methods.isAdmin().call({ from: currentAccount });
-    // if (!isAdmin) {
-    //   throw new Error('Account is not admin');
-    // }
 
     console.log("collection : ", collectionId);
     const numCards = 10;
@@ -78,13 +73,21 @@ export const buyCard = async (setId: string, cardId: string) => {
 
 export const addCollectionToBlockchain = async (setId: string, cards: any[]) => {
   try {
+     
+    const currentAccount = (window as any).ethereum.selectedAddress;
+
+    // Vérifier si le compte est admin
+    const isAdmin = await contract.methods.isAdmin().call({ from: currentAccount });
+    if (!isAdmin) {
+      throw new Error('Account is not admin');
+    }
     await contract.methods.createCollection(setId, cards.length)
-      .send({ from: accounts[0] });
+      .send({ from: currentAccount });
 
     for (const card of cards) {
       try {
         await contract.methods.addModelCard(setId, card.id)
-          .send({ from: accounts[0] });
+          .send({ from: currentAccount });
       } catch (cardError) {
         console.error(`Failed to add card ${card.id}:`, cardError);
       }
