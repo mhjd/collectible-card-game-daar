@@ -39,12 +39,16 @@ contract Main is Ownable {
         return res;
     }
 
+    function mint(string memory _collectionName,address _owner, string memory _modelCardId) public payable returns(Collection.Card memory){
+        return mintCardForBooster(_collectionName, _owner, _modelCardId);
+    }
+
     function assignCardToOwner(string memory _collectionName, address _owner, uint nft) private returns(Collection.Card memory) {
       Collection collection = collections[getCollectionByName(_collectionName)];
       return collection.assignCard(nft, _owner);
     }
 
-    function mint(string memory _collectionName,address _owner, string memory _modelCardId) private returns(Collection.Card memory) {
+    function mintCardForBooster(string memory _collectionName,address _owner, string memory _modelCardId) private returns(Collection.Card memory) {
       uint _collectionId = getCollectionByName(_collectionName);
       Collection collection = collections[_collectionId];
       uint nft = collection._createCard(_modelCardId);
@@ -53,12 +57,12 @@ contract Main is Ownable {
 
     function assignRandomCardToOwner(string memory _collectionName, address _owner) private returns(Collection.Card memory) {
         uint _collectionId = getCollectionByName(_collectionName);
-      string memory randomModelId = collections[_collectionId].getRandomModelId();
-      return mint(_collectionName, _owner, randomModelId);
+        string memory randomModelId = collections[_collectionId].getRandomModelId();
+        return mintCardForBooster(_collectionName, _owner, randomModelId);
     }
 
     // In Main.sol
-    mapping(address => string[]) private lastAssignedCards;//Dernière cartes tirées
+    mapping(address => string[]) private lastAssignedCards;//Dernières cartes tirées
 
     // ouverture de booster
     function assignXRandomCardsToOwner(string memory _collectionName, address _owner, uint nb) public returns(string[] memory){
