@@ -72,27 +72,26 @@ contract Main is Ownable {
         return card.owner == _user;
     }
 
-    error notAllCardsGet();
-
     function getUserCards(address _user) external view returns(Collection.Card[] memory){
         Collection.Card[] memory user_cards;
 
         for(uint i = 0; i<count; i++){
-            Collection.Card[] memory current_nfts = collections[i].getCards();
-            for(uint j = 0; j < current_nfts.length; j++){
-                if(isOwnerOf(current_nfts[j],_user)){
-                    user_cards[user_cards.length] = current_nfts[j];
-                    if(collections[i].getOwnerCardCount(_user) == user_cards.length){
-                    // Si c'était la derniere carte du user on peut s'arreter, on n'est pas sensés s'arrêter ailleurs
-                        return user_cards;
-                    }
+            uint cpt = 0;
+            uint cptMax = collections[i].getOwnerCardCount(_owner);
+            uint length = collections[i].getCardsLength();
+            for(uint j = 0; j < length; j++){
+                if(cpt == cptMax){
+                    // Si c'était la derniere carte du user on peut s'arreter
+                    j = length;
+                }
+                Collection.Card currentCard = collections[i].getCard(j);
+                if(isOwnerOf(currentCard,_user)){
+                    user_cards.push(currentCard);
+                    cpt++;
                 }
             }
         }
-        if(count == 0) {
-            return user_cards;
-        }
-        revert notAllCardsGet();
+        return user_cards;
     }
 
     function _test() public pure returns(uint) {

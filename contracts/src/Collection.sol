@@ -26,8 +26,12 @@ contract Collection is ERC721, Ownable {
     ModelCard[] public modelCards; // public ?
     Card[] public cards;
 
-    function getCards() external view returns(Card[] memory){
-        return cards;
+    function getCard(uint index) external view returns(Card memory){
+        return cards[index];
+    }
+
+    function getCardsLength() external view returns(uint){
+        return cards.length;
     }
 
     //mapping (uint => address) cardToOwner;  // on skip pr l'instant pcq dans la struct
