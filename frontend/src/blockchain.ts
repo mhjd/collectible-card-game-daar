@@ -65,6 +65,18 @@ export const addCollectionToBlockchain = async (setId: string, cards: any[]) => 
   }
 };
 
+export const getUserCardsByAddress = async (address: string) => {
+  try {
+    const cards = await contract.methods.getUserCards(address)
+      .call({ from: accounts[0] });
+    console.log(cards);
+    return cards.map(card => card.modelNumber);
+  } catch (error) {
+    console.error('Error fetching user cards:', error);
+    return [];
+  }
+};
+
 export const getUserCardsOfUser = async () => {
   try {
     if (!accounts || accounts.length === 0) {
