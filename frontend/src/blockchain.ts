@@ -33,7 +33,7 @@ const numCards = 10;
       console.log("affichage : ")
       
       console.log("contenu : ", cards)
-    return cards.map((card: any) => card.modelNumber);
+    return cards;
   } catch (error) {
     console.error('Error opening booster:', error);
     return [];

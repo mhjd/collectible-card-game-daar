@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import pokemon from 'pokemontcgsdk';
 import styles from './styles.module.css';
 import CollectionGrid from './CollectionGrid';
-import BoosterResult from './BoosterResult';
 import { initBlockchain, getBlockchainCollections, openABooster } from './blockchain';
 
 
@@ -15,8 +15,7 @@ const OpenBooster: React.FC<OpenBoosterProps> = ({ sets }) => {
   const [filteredSets, setFilteredSets] = useState<any[]>([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedSet, setSelectedSet] = useState<string>('');
-  const [boosterResults, setBoosterResults] = useState<string[]>([]);
-  const [showResults, setShowResults] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const init = async () => {
@@ -75,8 +74,7 @@ const OpenBooster: React.FC<OpenBoosterProps> = ({ sets }) => {
     setShowConfirm(false);
     try {
       const cards = await openABooster(selectedSet);
-      setBoosterResults(cards);
-      setShowResults(true);
+      navigate('/booster-result', { state: { cards } });
     } catch (error) {
       console.error('Error opening booster:', error);
     }
@@ -105,12 +103,6 @@ const OpenBooster: React.FC<OpenBoosterProps> = ({ sets }) => {
           </div>
         )}
 
-        {showResults && (
-          <BoosterResult 
-            cards={boosterResults} 
-            onClose={() => setShowResults(false)}
-          />
-        )}
       </div>
     </div>
   );
