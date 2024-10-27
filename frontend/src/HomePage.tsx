@@ -9,7 +9,7 @@ export const HomePage: React.FC = () => {
       <div className={styles.container}>
         <img src={logo} alt="Pokémon TCG Logo" className={styles.logo}/>
         <nav className={styles.navigation}>
-          <ul className={styles.noListStyle}>
+          <ul className={styles.noListStyleHomePage}>
             <li>
               <Link to="/sets">
                 <button className={styles.navLink} role="button" ><span className={styles.text}>Extensions</span></button>
@@ -32,7 +32,6 @@ export const HomePage: React.FC = () => {
             </li>
           </ul>
         </nav>
-        {/*<input type="button" className="button-64" role="button"><span className="text">Extensions</span></input>*/}
       </div>
     </div>
   );

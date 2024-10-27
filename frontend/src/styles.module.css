@@ -102,8 +102,12 @@ body {
   padding: 20px 0;
   width: 100%;
 }
-
 .noListStyle {
+  list-style-type: none;
+  padding: 0;
+}
+
+.noListStyleHomePage {
   list-style-type: none;
   padding: 0;
   display: flex;
