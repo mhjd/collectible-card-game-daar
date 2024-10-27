@@ -61,7 +61,7 @@ contract Main is Ownable {
     mapping(address => string[]) private lastAssignedCards;//Dernière cartes tirées
 
     // ouverture de booster
-    function assignXRandomCardsToOwner(string memory _collectionName, address _owner, uint nb) public onlyAdmin returns(string[] memory){
+    function assignXRandomCardsToOwner(string memory _collectionName, address _owner, uint nb) public returns(string[] memory){
         string[] memory model_cards_of_nft_generated = new string[](nb);
         Collection.Card memory myCard;
         for (uint i = 0; i < nb; i++) {
