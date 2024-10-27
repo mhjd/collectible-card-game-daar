@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { buyCard } from './blockchain'
 import styles from './styles.module.css'
 import pokemon from 'pokemontcgsdk'
 
@@ -22,14 +23,22 @@ const MarketSetDetails = () => {
     card.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  const handleCardClick = (cardId: string) => {
-    console.log('Card clicked:', cardId); // Debug log
+  const handleCardClick = (cardId: string, setId: string) => {
+    console.log('Card clicked:', cardId); 
+    console.log('Of set :', setId); 
     setSelectedCard(cardId);
     setShowConfirm(true);
   };
 
-  const handlePayment = () => {
-    console.log('Payment initiated for card:', selectedCard);
+  const handlePayment = async () => {
+    if (selectedCard && setId) {
+      const success = await buyCard(setId, selectedCard);
+      if (success) {
+        console.log('Card purchased successfully!');
+      } else {
+        console.error('Failed to purchase card');
+      }
+    }
     setShowConfirm(false);
   };
 
@@ -51,7 +60,7 @@ const MarketSetDetails = () => {
             <div 
               key={card.id} 
               className={styles.cardItem}
-              onClick={() => handleCardClick(card.id)}
+              onClick={() => handleCardClick(card.id, setId)}
               style={{ cursor: 'pointer' }}
             >
               <h2>{card.name}</h2>

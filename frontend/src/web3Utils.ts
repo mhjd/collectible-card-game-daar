@@ -246,6 +246,52 @@ export const myAbi = [
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_collectionName",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_modelCardId",
+          "type": "string"
+        }
+      ],
+      "name": "mint",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "modelNumber",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "cardId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct Collection.Card",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "owner",
       "outputs": [
@@ -289,6 +335,8 @@ export const getContractAddress = () =>  {
 export const getContract = () => {
   return new web3.eth.Contract(myAbi, contractAddress);
 };
+
+
 
 export const getAccounts = async (): Promise<string[]> => {
   try {

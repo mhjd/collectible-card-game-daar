@@ -1,4 +1,7 @@
 import { getContract, getAccounts, getContractAddress } from './web3Utils';
+import Web3 from 'web3';
+
+const web3 = new Web3("http://127.0.0.1:8545");
 
 let accounts: string[] = [];
 const contract = getContract();
@@ -56,6 +59,21 @@ export const openABooster = async (collectionId: string): Promise<string[]> => {
     console.error('Error opening booster:', error);
     return [];
   }
+}
+
+
+
+export const buyCard = async (setId: string, cardId: string) => {
+  try {
+    const currentAccount = (window as any).ethereum.selectedAddress;
+      await contract.methods.mint(setId, currentAccount, cardId)
+      .send({ from: currentAccount , value: web3.utils.toWei('0.001', 'ether')});
+    return true;
+  } catch (error) {
+    console.error('Error adding collection:', error);
+    return false;
+  }
+
 }
 
 export const addCollectionToBlockchain = async (setId: string, cards: any[]) => {
