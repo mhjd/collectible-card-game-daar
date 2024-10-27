@@ -77,7 +77,7 @@ contract Main is Ownable {
 
         for(uint i = 0; i<count; i++){
             uint cpt = 0;
-            uint cptMax = collections[i].getOwnerCardCount(_owner);
+            uint cptMax = collections[i].getOwnerCardCount(_user);
             uint length = collections[i].getCardsLength();
             for(uint j = 0; j < length; j++){
                 if(cpt == cptMax){
