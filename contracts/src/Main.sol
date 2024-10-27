@@ -39,19 +39,19 @@ contract Main is Ownable {
         return res;
     }
 
-    function assignCardToOwner(string memory _collectionName, address _owner, uint nft) private onlyAdmin returns(Collection.Card memory) {
+    function assignCardToOwner(string memory _collectionName, address _owner, uint nft) private returns(Collection.Card memory) {
       Collection collection = collections[getCollectionByName(_collectionName)];
       return collection.assignCard(nft, _owner);
     }
 
-    function mint(string memory _collectionName,address _owner, string memory _modelCardId) public onlyAdmin returns(Collection.Card memory) {
+    function mint(string memory _collectionName,address _owner, string memory _modelCardId) private returns(Collection.Card memory) {
       uint _collectionId = getCollectionByName(_collectionName);
       Collection collection = collections[_collectionId];
       uint nft = collection._createCard(_modelCardId);
       return assignCardToOwner(_collectionName, _owner, nft);
     }
 
-    function assignRandomCardToOwner(string memory _collectionName, address _owner) private onlyAdmin returns(Collection.Card memory) {
+    function assignRandomCardToOwner(string memory _collectionName, address _owner) private returns(Collection.Card memory) {
         uint _collectionId = getCollectionByName(_collectionName);
       string memory randomModelId = collections[_collectionId].getRandomModelId();
       return mint(_collectionName, _owner, randomModelId);
@@ -61,7 +61,7 @@ contract Main is Ownable {
     mapping(address => string[]) private lastAssignedCards;//Dernière cartes tirées
 
     // ouverture de booster
-    function assignXRandomCardsToOwner(string memory _collectionName, address _owner, uint nb) public onlyAdmin  returns(string[] memory){
+    function assignXRandomCardsToOwner(string memory _collectionName, address _owner, uint nb) public onlyAdmin returns(string[] memory){
         string[] memory model_cards_of_nft_generated = new string[](nb);
         Collection.Card memory myCard;
         for (uint i = 0; i < nb; i++) {
