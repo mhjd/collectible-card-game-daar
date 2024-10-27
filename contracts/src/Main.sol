@@ -57,6 +57,9 @@ contract Main is Ownable {
       return mint(_collectionName, _owner, randomModelId);
     }
 
+    // In Main.sol
+    mapping(address => string[]) private lastAssignedCards;//Dernière cartes tirées
+
     // ouverture de booster
     function assignXRandomCardsToOwner(string memory _collectionName, address _owner, uint nb) public onlyAdmin  returns(string[] memory){
         string[] memory model_cards_of_nft_generated = new string[](nb);
@@ -65,7 +68,12 @@ contract Main is Ownable {
             myCard = assignRandomCardToOwner(_collectionName, _owner);
             model_cards_of_nft_generated[i] = myCard.modelNumber;
         }
+        lastAssignedCards[_owner] = model_cards_of_nft_generated;
         return model_cards_of_nft_generated;
+    }
+
+    function getLastAssignedCards(address owner) public view returns(string[] memory) {
+        return lastAssignedCards[owner];
     }
 
     function isOwnerOf (Collection.Card memory card, address _user) public pure returns(bool){
